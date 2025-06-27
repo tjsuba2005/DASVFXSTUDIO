@@ -1,0 +1,228 @@
+/* src/pages/HomePage.css */
+
+/* General Container Styling */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+
+/* ================================================= */
+/* NEW: 2-COLUMN ABOUT SECTION STYLES                */
+/* ================================================= */
+.about-section {
+  display: flex;
+  gap: 2rem; /* Space between the two columns */
+  margin-bottom: 4rem;
+  align-items: flex-start; /* Aligns items to the top */
+}
+
+.philosophy-content {
+  flex: 2; /* Philosophy column takes up 2/3 of the space */
+  text-align: left;
+}
+.philosophy-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+.philosophy-content p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.philosophy-content strong {
+  color: #4a4e50;
+}
+
+.company-details {
+  flex: 1; /* Company Details column takes up 1/3 of the space */
+  background-color: #878181;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #1f2020;
+}
+.company-details h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+.company-details dl div {
+  margin-bottom: 1rem;
+}
+.company-details dt { /* <dt> is the 'key' e.g., "Major Activity" */
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+.company-details dd { /* <dd> is the 'value' e.g., "Services" */
+  margin-left: 0; /* Reset default browser margin */
+  color: #b3b3b3;
+}
+
+
+/* ================================================= */
+/* UPDATED: SHOWREEL GALLERY STYLES                  */
+/* ================================================= */
+.showreel-gallery h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.reels-container {
+  display: flex; /* This makes the showreels appear side-by-side */
+  gap: .5rem; /* This creates space between the showreels */
+  justify-content: center; /* Centers the items if there's extra space */
+}
+
+.showreel-item {
+  flex: 1; /* Each showreel will take up an equal amount of space */
+  min-width: 300px; /* Prevents them from getting too squished */
+  background-color: #d7cfcf;
+  padding: .5rem;
+  border-radius: 8px;
+}
+
+.showreel-item h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.reel-description {
+  margin-bottom: 1rem;
+  color: #646cb4;
+}
+
+
+/* ================================================= */
+/* NEW: RESPONSIVE STYLES FOR MOBILE                 */
+/* ================================================= */
+@media (max-width: 992px) {
+  /* On tablets and smaller, the two columns will stack on top of each other */
+  .about-section {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  /* On mobile phones, the showreels will also stack */
+  .reels-container {
+    flex-direction: column;
+  }
+  
+  .home-header h1 {
+    font-size: 2.5rem;
+  }
+  .home-header .tagline {
+    font-size: 1.2rem;
+  }
+}
+/* src/pages/HomePage.css */
+
+/* --- 1. Style the Grid Container --- */
+/* This is the most important part. It creates the 3-column grid. */
+.reels-container {
+  display: grid;
+  /* This creates 3 columns of equal width (1fr = 1 fraction of the space) */
+  grid-template-columns: repeat(3, 1fr);
+  /* This adds a nice gap between the items, both horizontally and vertically */
+  gap: 1rem;
+  padding: 0rem 0; /* Add some spacing above and below the gallery */
+}
+
+/* --- 2. Polish the Individual Reel Items (Optional but Recommended) --- */
+.showreel-item {
+  background-color: rgba(255, 255, 255, 0.05); /* A subtle background */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; /* Ensures the video corners are rounded */
+}
+
+.showreel-item:hover {
+  transform: translateY(-5px); /* Lifts the card slightly on hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.showreel-item h3 {
+  margin-bottom: 1rem; /* Add space between the title and the video */
+  min-height: 3em; /* Give titles some minimum space to help align cards */
+}
+
+/* Ensure the video inside our component is responsive */
+.showreel-item .video-player-container video {
+  width: 100%;
+  height: auto;
+  display: block; /* Removes any extra space below the video */
+  border-radius: 4px; /* Slightly round the video corners */
+}
+
+
+/* --- 3. MAKE IT RESPONSIVE (Crucial Step!) --- */
+/* On tablets and smaller devices, switch to a 2-column grid. */
+@media (max-width: 992px) {
+  .reels-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* On mobile phones, switch to a single-column layout. */
+@media (max-width: 768px) {
+  .reels-container {
+    grid-template-columns: 1fr; /* This creates a single column */
+  }
+}
+
+
+/* --- Styles for your new 2-column Philosophy/Profile Section --- */
+.about-section {
+  display: flex;
+  gap: 3rem; /* Space between the two columns */
+  margin: 3rem 0; /* Space above and below the section */
+  flex-wrap: wrap; /* Allows columns to stack on mobile */
+  align-items: flex-start; /* Aligns columns to the top */
+}
+
+.philosophy-content {
+  flex: 2; /* Takes up 2/3 of the space */
+  min-width: 300px;
+}
+
+.company-details {
+  flex: 1; /* Takes up 1/3 of the space */
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 8px;
+  min-width: 280px;
+}
+
+.company-details h3 {
+  margin-bottom: 1rem;
+}
+
+/* Style the definition list for the company profile */
+.company-details dl div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.company-details dt { /* "Major Activity", etc. */
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.company-details dd { /* "Services", etc. */
+  color: var(--accent-color); /* Use your accent color for the values */
+  text-align: right;
+}
+/* src/pages/HomePage.css */
+
+/* ... add this at the top of your file ... */
+
+.philosophy-content strong {
+  color: var(--secondary-color); /* This uses your neon magenta */
+  font-weight: 700; /* Makes it a bit bolder */
+}

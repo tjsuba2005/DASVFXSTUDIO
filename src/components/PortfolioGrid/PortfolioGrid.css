@@ -1,0 +1,75 @@
+/* src/components/PortfolioGrid/PortfolioGrid.css */
+
+/* --- Main Grid Container --- */
+.portfolio-grid {
+  display: grid;
+  /* Creates a responsive grid with columns that are at least 300px wide */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Individual Item Card --- */
+.portfolio-item {
+  position: relative; /* Crucial for the overlay */
+  overflow: hidden;   /* Hides anything that goes outside the rounded corners */
+  border-radius: 12px;
+  cursor: pointer;
+  aspect-ratio: 16 / 9; /* Enforces a widescreen aspect ratio */
+  background-color: #1a1a2e; /* Fallback color while media loads */
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+/* --- Shared styles for BOTH <video> and <img> tags --- */
+.portfolio-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This makes the media fill the container without distortion */
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+/* --- The Text Overlay --- */
+.portfolio-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 13, 43, 0.8);
+  backdrop-filter: blur(4px);
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* --- Text Styles Inside the Overlay --- */
+.portfolio-title {
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-category {
+  color: var(--text-color);
+  margin-top: 0.25rem;
+}
+
+
+/* --- The Hover Effect --- */
+.portfolio-item:hover {
+  border-color: var(--secondary-color);
+}
+
+.portfolio-item:hover .portfolio-overlay {
+  opacity: 1; /* Fade in the overlay on hover */
+}
+
+.portfolio-item:hover .portfolio-media {
+  transform: scale(1.1); /* Slightly zoom the background media */
+}

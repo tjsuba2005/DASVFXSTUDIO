@@ -1,0 +1,29 @@
+layout-container {
+  /* Path to your image, relative to the public folder or imported */
+  background-image: url('public\background.jpg'); /* Adjust the path as needed */
+
+  /* Make sure the container is at least as tall as the viewport */
+  min-height: 100vh;
+
+  /* Background image behavior */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* This creates a nice parallax effect when scrolling */
+  /* background-attachment: fixed; */
+
+  /* Use flexbox to make the footer stick to the bottom */
+  display: flex;
+  flex-direction: column;
+  
+}
+
+/* 
+  This is a small but important addition for sticky footers.
+  It tells the <main> content area to grow and take up any available space,
+  pushing the footer down to the bottom of the screen.
+*/
+.layout-container main {
+  flex-grow: 1;
+}

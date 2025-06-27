@@ -1,0 +1,56 @@
+/* src/components/ImageBackground/ImageBackground.css */
+
+.image-background-wrapper {
+  /* This is crucial: it establishes a positioning context for its children. */
+  position: relative;
+  width: 100%;
+
+  /* --- Default Background Styles --- */
+  background-size: cover;       /* Ensures the image covers the whole area */
+  background-position: center;  /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from tiling */
+
+  /* Fixes the background for a cool parallax effect. Remove if you don't want this. */
+  background-attachment: fixed;
+
+  /* Ensures the container has some height if the content is empty */
+  min-height: 300px;
+  overflow: hidden; /* Contains the overlay and content */
+}
+
+/* The dark overlay that sits on top of the background image */
+.image-overlay {
+  /* This makes the overlay cover the entire parent wrapper */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* The dark tint. Adjust the last value (alpha) to make it darker or lighter. */
+  /*background-color: rgba(0, 0, 0, 0.5); 
+  
+  /* It sits above the background (which is at z-index: 0 by default) */
+  z-index: 1;
+}
+
+/* The container for your actual content */
+.content-on-top {
+  /* It needs to have its own positioning context to appear above the overlay */
+  position: relative;
+  
+  /* It sits above the overlay */
+  z-index: 2;
+
+  /* Allow content to take up the full space and be scrollable if needed */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  /* For demonstration, let's center the content. You can remove this. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}

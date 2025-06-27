@@ -1,0 +1,40 @@
+/*
+  This new class is for the self-hosted <video> element.
+  It's simpler because the <video> tag handles its own aspect ratio
+  when width and height are 100%.
+*/
+.video-responsive-self-hosted {
+  width: 100%;
+  max-width: 900px; /* Optional: Set a max-width to prevent it from becoming too large on huge screens */
+  margin: 0 auto; /* Center the player if max-width is used */
+  border: 2px solid var(--accent-color);
+  border-radius: 1px;
+  box-shadow: 0 0 20px var(--accent-color);
+  overflow: hidden; /* Ensures the border-radius is applied to the video corners */
+  background-color: #000; /* Black background in case video is slow to load */
+}
+
+/* Make sure the video element itself fills its container */
+.video-responsive-self-hosted video {
+  display: block; /* Removes any extra space below the video */
+  width: 100%;
+}
+
+/* Keep the old styles if you might still use YouTube embeds elsewhere */
+.video-responsive {
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+  height: 0;
+  border: 2px solid var(--accent-color);
+  border-radius: 1px;
+  box-shadow: 0 0 20px var(--accent-color);
+}
+
+.video-responsive iframe {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

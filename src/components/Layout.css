@@ -1,0 +1,65 @@
+layout-container {
+  /* Path to your image, relative to the public folder or imported */
+  /*background-image: url('public\background.jpg'); /* Adjust the path as needed */
+
+  /* Make sure the container is at least as tall as the viewport */
+  min-height: 100vh;
+
+  /* Background image behavior */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* This creates a nice parallax effect when scrolling */
+  /* background-attachment: fixed; */
+
+  /* Use flexbox to make the footer stick to the bottom */
+  display: flex;
+  flex-direction: column;
+  padding-left: 0%;
+}
+
+/* 
+  This is a small but important addition for sticky footers.
+  It tells the <main> content area to grow and take up any available space,
+  pushing the footer down to the bottom of the screen.
+*/
+.layout-container main {
+  flex-grow: 1;
+}
+/* src/components/Layout.css */
+
+
+/* src/Layout.css */
+
+/* src/Layout.css */
+
+.main-layout-wrapper {
+  /* Use flexbox to structure the page vertically */
+  display: flex;
+  flex-direction: column;
+
+  /* This is crucial: it ensures the wrapper is AT LEAST as tall as the screen.
+     If the content is taller, it will grow. */
+  min-height: 100%;
+}
+
+.main-layout-wrapper main {
+  /* This tells the main content area to expand and take up any available
+     empty space, which pushes the footer down to the bottom. */
+  flex-grow: 1;
+}
+/* src/Layout.css */
+.app-layout {
+  min-height: 100vh;
+}
+
+.main-layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width:100%;
+  padding-left: 0%;
+    padding-right: 0%;
+}
+/* ... etc. */

@@ -1,0 +1,160 @@
+/* src/pages/AboutUsPage.css */
+
+.about-us-page {
+  padding-bottom: 1rem; /* Add extra space at the bottom */
+}
+
+/* --- Header Styles --- */
+.about-header {
+  text-align: center;
+  padding: 0rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.about-header h1 {
+  font-size: 3rem;
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
+}
+
+.about-subtitle {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  opacity: 0.8;
+}
+
+/* --- Mission Section Styles --- */
+.mission-section {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem auto;
+}
+
+.mission-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.mission-section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* --- Team Section Styles --- */
+.team-section {
+  margin-bottom: 1rem;
+}
+
+.team-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.team-grid {
+  display: grid;
+  /* This creates a responsive grid that fits as many columns as possible */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.team-member {
+  text-align: center;
+  background: rgba(189, 231, 228, 0.05);
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.team-member img {
+  width: 150px;
+  height: 100px;
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover;
+  border: 4px solid var(--secondary-colorr);
+  margin-bottom: 1rem;
+}
+
+.team-member h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  color: var(--secondary-color);
+}
+
+.team-member p {
+  color: var(--secondary-color);
+}
+
+/* --- Company Profile Section --- */
+.company-profile-section {
+  display: flex; /* Helps center the details box */
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Using the same class as homepage for consistency */
+.company-details {
+  background-color: rgba(80, 174, 200, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--secondary-color);
+  width: 100%;
+  max-width: 600px;
+}
+
+.company-details h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.company-details dl div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(132, 226, 8, 0.1);
+}
+
+.company-details dt {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.company-details dd {
+  color: var(--text-color);
+  text-align: right;
+  margin-left: 1rem; /* Ensure space between key and value */
+}
+
+
+/* --- Call to Action (CTA) Section --- */
+.cta-section {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(232, 229, 229, 0.2);
+  border-radius: 8px;
+}
+.cta-section h2 {
+  margin-bottom: 1.5rem;
+}
+.cta-button {
+  display: inline-block;
+  background: var(--secondary-color);
+  color: #0b0b0d; /* Dark background color for text */
+  padding: 0.75rem 2rem;
+  border-radius: 5px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--secondary-color);
+}

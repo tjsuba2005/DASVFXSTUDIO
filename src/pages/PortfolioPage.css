@@ -1,0 +1,123 @@
+/* src/components/PortfolioGrid/PortfolioGrid.css */
+
+/* --- Grid Container --- */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Individual Item Card --- */
+.portfolio-item {
+  position: relative; /* Crucial for the overlay */
+  overflow: hidden;
+  border-radius: 8px;
+  aspect-ratio: 16 / 9; /* Enforces a widescreen aspect ratio */
+  background-color: #1a1a2e; /* Fallback color */
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+/* --- Shared styles for BOTH <video> and <img> tags --- */
+.portfolio-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This is the magic! It makes the media cover the entire card */
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+/* --- Overlay and Text Styles --- */
+.portfolio-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 13, 43, 0.7);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+
+  /* ensure that both the `<img>` and `<video>` tags fill their container correctly.
+
+**Open `src/components/PortfolioGrid/PortfolioGrid.css` and use this CSS:**
+
+```css
+/* src/components/PortfolioGrid/PortfolioGrid.css */
+
+/* --- Main Grid Container --- */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Individual Item Card --- */
+.portfolio-item {
+  position: relative; /* Crucial for the overlay */
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+  aspect-ratio: 16 / 9; /* Enforces a widescreen aspect ratio for all items */
+  background-color: #1a1a2e; /* A fallback color while media loads */
+}
+
+/* --- Shared Style for both <video> and <img> --- */
+.portfolio-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This is key: it makes the media fill the container */
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+/* --- Overlay and Hover Effects (Same as before) --- */
+.portfolio-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 13, 43, 0.8);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.portfolio-item:hover {
+  border-color: var(--secondary-color);
+}
+
+.portfolio-item:hover .portfolio-overlay {
+  opacity: 1;
+}
+
+.portfolio-item:hover .portfolio-media {
+  transform: scale(1.1);
+}
+
+/* ... other text styles for title and category ... */
+.portfolio-title {
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-category {
+  color: var(--text-color);
+}

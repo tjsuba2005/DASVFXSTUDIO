@@ -27,7 +27,7 @@ const AboutUs = () => {
       </section>
 
       {/* --- Section 3: Meet the Team --- */}
-      <section className="team-section">
+  //*   <section className="team-section">
         <h2>Meet the Core Team</h2>
         <div className="team-grid">
           <article className="team-member">
@@ -47,7 +47,7 @@ const AboutUs = () => {
           </article>
         </div>
       </section>
-
+*//
       {/* --- Section 4: Company Profile (Your Requested Section) --- */}
       <section className="company-profile-section">
         <aside className="company-details">

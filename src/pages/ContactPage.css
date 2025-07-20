@@ -1,49 +1,84 @@
-.contact-page {
-  padding-bottom: 2rem,2rem;
+/* src/pages/ContactPage.css */
+
+/* --- Main Page Wrapper --- */
+.contact-page-wrapper {
+  padding: 3rem 2rem; /* Adds space around the entire content */
+  color: white;       /* Sets default text color for the page */
+  width: 90%;
+  min-height: 100vh; /* Ensures the page takes at least full screen height */
+  animation: fadeIn 1s ease-in-out; /* Simple fade-in animation */
 }
 
+/* --- Page Header Section --- */
 .contact-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 3rem; /* Space between the header and the main content box */
 }
 
 .contact-header h1 {
-  font-size: 3rem;
+  font-size: 2.8rem;
   margin-bottom: 0.5rem;
+  color: #3d6b81; /* A bright, thematic blue for the main title */
 }
 
-.contact-container {
+.contact-header p {
+  font-size: 1.1rem;
+  color: #ccc; /* A lighter grey for the subtitle */
+  max-width: 600px;
+  margin: 0 auto; /* Center the paragraph text */
+}
+
+/* --- Main Content Container (This creates the two-column layout) --- */
+.contact-content-container {
+  display: flex; /* **This is the key:** Aligns children (the columns) side-by-side */
+  gap: 3rem; /* Creates a nice gap between the two columns */
+  max-width: 1200px; /* Prevents the layout from becoming too wide on large screens */
+  margin: 0 auto; /* Centers the container on the page */
+  
+  /* Styling for the container box, inspired by your screenshot */
+  background-color: #05579a; /* The bright blue background */
+  color: #0d2c4a; /* A dark blue for text *inside* the bright blue box */
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Left Column: Contact Information --- */
+.contact-info-column {
+  flex: 1; /* Tells this column to take up 1 "part" of the available space */
+}
+
+.contact-info-column h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.info-subtitle {
+  margin-bottom: 2rem;
+}
+
+.info-list {
+  list-style: none; /* Remove default bullet points */
+  padding: 0;
+}
+
+.info-list li {
   display: flex;
-  width:70%;
-  gap: 3rem;
-  flex-wrap: wrap;
-  background: #90acc9;
-  padding: 2rem,2rem;
-  border-radius: 8px;
-  border: 1px solid var(--accent-color);
-}
-
-.contact-details, .contact-form-container {
-  flex: 1;
-  min-width: 1600px;
-}
-
-.contact-details h2 {
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
-}
-
-.detail-item {
-  display: flex;
-  align-items: center;
+  align-items: center; /* Vertically aligns icon (if you add one) and text */
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
 }
 
-.detail-icon {
-  color: var(--accent-color);
+/* (If you add react-icons, you can uncomment this) */
+/* .info-icon {
   font-size: 1.5rem;
   margin-right: 1rem;
+} */
+
+
+/* --- Right Column: The Contact Form --- */
+.contact-form-column {
+  flex: 1.5; /* Tells this column to take up 1.5 "parts" of the space, making it wider */
 }
 
 .form-group {
@@ -51,56 +86,73 @@
 }
 
 .form-group label {
-  display: block;
+  display: block; /* Makes the label sit on its own line above the input */
   margin-bottom: 0.5rem;
-  color: var(--text-color);
   font-weight: bold;
 }
 
-.form-group input,
-.form-group textarea {
-  width: 50%;
-  padding: 12px;
-  background-color: var(--accent-color);
-  border: 1px solid var(--secondary-color);
+.contact-form-column input,
+.contact-form-column textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #f0f8ff; /* A very light blue for input fields */
+  border: 1px solid #ccc;
   border-radius: 5px;
-  color: var(--text-color);
+  color: #333; /* Dark text for inside the inputs */
   font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 8px var(--accent-color);
+/* Style for when a user clicks into an input field */
+.contact-form-column input:focus,
+.contact-form-column textarea:focus {
+  outline: none; /* Removes the default browser outline */
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Adds a blue glow effect */
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 150px;
+.contact-form-column textarea {
+  min-height: 120px; /* Give the message box a decent starting height */
+  resize: vertical; /* Allows the user to resize the textarea height */
 }
 
-.submit-btn {
-  width: 10%;
-  padding: 1px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  font-family: 'Orbitron', sans-serif;
-  color: var(--text-color);
-  background-color: var(--accent-color);
+.submit-button {
+  width: 50%;
+  padding: 0.9rem;
+  background-color: #739fc6; /* A standard, strong blue for the button */
+  color: rgb(15, 5, 5);
   border: none;
   border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-.submit-btn:hover {
-  background-color: var(--accent-color);
+.submit-button:hover {
+  background-color: #0056b3; /* A slightly darker blue on hover */
+  transform: translateY(-2px); /* A subtle "lift" effect */
 }
 
-/* Responsive layout for smaller screens */
+
+/* 
+  ==========================================================================
+  RESPONSIVE DESIGN for Mobile Devices (e.g., screen width below 768px)
+  ==========================================================================
+*/
 @media (max-width: 768px) {
-  .contact-container {
+  .contact-page-wrapper {
+    padding: 2rem 1rem;
+  }
+
+  /* This is the key for mobile: stack the columns vertically instead of side-by-side */
+  .contact-content-container {
     flex-direction: column;
   }
+}
+
+/* --- Simple fade-in animation keyframes --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

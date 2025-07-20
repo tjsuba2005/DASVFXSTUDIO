@@ -1,75 +1,130 @@
-// src/pages/PortfolioPage.jsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; // <-- IMPORTANT: Use the global auth context
 import PortfolioGrid from '../components/PortfolioGrid/PortfolioGrid';
+import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import './PortfolioPage.css';
 
-// --- DATA ---
-// CORRECTED: IDs are now unique and image paths use forward slashes (/)
-// and point to the public folder.
-const allPortfolioItems = [
-  { id: 1, title: 'Rocky Aur Rani Kii Prem Kahaani (2023-Feature Film)', category: 'Compositing', image: '/video/showreel_01.mp4' },
-  { id: 2, title: 'Cyber City', category: '3D Modeling', image: '/images/img_05.jpeg' }, // <-- CORRECTED PATH
-  { id: 3, title: 'Cosmic Drift', category: 'Simulation', image: '/video/showreel_02.mp4' },
-  { id: 4, title: ' GREEN SCREEN & FX', category: 'Compositing', image: '/video/showreel_03.mp4' },
-  { id: 5, title: 'Forest Spirit', category: '3D Modeling', image: '/images/img_01.jpeg' }, // <-- CORRECTED ID & PATH
-  { id: 6, title: 'Jungle Ruins', category: '3D Modeling', image: '/images/img_02.jpeg' }, // <-- CORRECTED ID & PATH
-  { id: 7, title: 'Mountain Temple', category: '3D Modeling', image: '/images/img_03.jpeg' }, // <-- CORRECTED ID & PATH
-  { id: 8, title: ' GREEN SCREEN & FX', category: '3D Modeling', image: '/images/img_04.jpeg' }, // <-- CORRECTED ID & PATH
-  { id: 9, title: ' GREEN SCREEN & FX', category: 'VFX', image: '/video/showreel_05.mp4' },
-  { id: 10, title: 'MUZZLE FLASH', category: 'Animation', image: '/video/showreel_06.mp4' },
-  { id: 11, title: 'PARTICLES & DMP', category: 'Simulation', image: '/video/showreel_07.mp4' },
-  { id: 12, title: 'PARTICLES & DMP', category: 'Simulation', image: '/video/showreel_08.mp4' },
-  { id: 13, title: '3D-Comp', category: 'Simulation', image: '/video/showreel_09.mp4' },
-  { id: 14, title: 'Keying & Set Extension', category: 'Simulation', image: '/video/showreel_10.mp4' },
-  { id: 15, title: '3Keying & Set Extension', category: 'Simulation', image: '/video/showreel_11.mp4' },
-  { id: 16, title: '3D Modeling/Tracking', category: 'Simulation', image: '/video/showreel_12.mp4' },
-  { id: 17, title: '3Keying & Set Extension', category: 'Simulation', image: '/video/showreel_13.mp4' },
-  { id: 18, title: '3D Modeling/Tracking', category: 'Simulation', image: '/video/showreel_14.mp4' },
-];
+const BACKEND_URL = 'http://localhost:5000';
 
-// --- COMPONENT ---
 const PortfolioPage = () => {
-  // State to hold the currently displayed items
-  const [filteredItems, setFilteredItems] = useState(allPortfolioItems);
-  
-  // State to track the active filter button
+  // Get the user status directly from our global context
+  const { user, isLoading: isAuthLoading } = useAuth(); 
+
+  // State for this page's specific data
+  const [videos, setVideos] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [isPortfolioLoading, setIsPortfolioLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Get a unique list of categories for the filter buttons
-  const categories = ['All', ...new Set(allPortfolioItems.map(item => item.category))];
+  useEffect(() => {
+    // This effect now ONLY fetches videos, and only if a user exists.
+    if (user) {
+      const fetchPortfolioVideos = async () => {
+        setIsPortfolioLoading(true);
+        try {
+          const videosRes = await axios.get(`${BACKEND_URL}/api/videos`, {
+            withCredentials: true,
+          });
+          
+          const formattedData = videosRes.data.map(video => ({
+            id: video.id,
+            title: video.name.replace(/\.[^/.]+$/, ""),
+            category: video.category,
+            image: video.thumbnailLink,
+            videoUrl: `${BACKEND_URL}/api/stream/${video.id}`
+          }));
 
-  // Function to handle clicking a filter button
+          setVideos(formattedData);
+          setFilteredItems(formattedData);
+        } catch (err) {
+          console.error("Error fetching portfolio videos:", err);
+          setError("Could not load your video portfolio. Please try refreshing.");
+        } finally {
+          setIsPortfolioLoading(false);
+        }
+      };
+
+      fetchPortfolioVideos();
+    } else {
+      // If there's no user, we're not loading anything.
+      setIsPortfolioLoading(false);
+    }
+  }, [user]); // Re-run this effect if the user object changes (e.g., on login/logout)
+
+  const categories = ['All', 'DASVFX', ...new Set(videos.map(item => item.category).filter(c => c !== 'DASVFX'))];
+
   const handleFilterClick = (category) => {
     setActiveFilter(category);
+    setFilteredItems(category === 'All' ? videos : videos.filter(item => item.category === category));
+  };
+  
+  const handleVideoSelect = (video) => setSelectedVideo(video);
 
-    if (category === 'All') {
-      setFilteredItems(allPortfolioItems);
-    } else {
-      const newItems = allPortfolioItems.filter(item => item.category === category);
-      setFilteredItems(newItems);
+  const renderContent = () => {
+    // First, wait for the initial auth check to complete
+    if (isAuthLoading) {
+      return <LoadingSpinner message="Verifying Session..." />;
     }
+
+    // If there's no user after checking, they are not logged in.
+    // The Navbar will show the "Login" button. We can show a prompt here too.
+    if (!user) {
+      return (
+        <div className="login-container">
+          <h2>Portfolio Access</h2>
+          <p>This content is protected. Please log in to view the projects.</p>
+          {/* The login button is in the Navbar, so no button is needed here */}
+        </div>
+      );
+    }
+    
+    // If we get here, the user is logged in. Now check if the portfolio is loading.
+    if (isPortfolioLoading) {
+      return <LoadingSpinner message="Loading Portfolio..." />;
+    }
+
+    if (error) {
+      return <p className="error-message">{error}</p>;
+    }
+
+    return (
+      <>
+        <VideoPlayer video={selectedVideo} onClose={() => setSelectedVideo(null)} />
+        <div className="our-work-container">
+          <h2 className="our-work-title">Our Work</h2>
+          <p className="our-work-subtitle">A curated selection of our projects.</p>
+          <div className="filter-buttons">
+            {categories.map(category => (
+              <button key={category} className={`filter-button ${activeFilter === category ? 'active' : ''}`} onClick={() => handleFilterClick(category)}>
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+        {filteredItems.length > 0 ? (
+          <PortfolioGrid items={filteredItems} onVideoSelect={handleVideoSelect} />
+        ) : (
+          <p className="no-videos-message">No videos found in your portfolio folder.</p>
+        )}
+      </>
+    );
   };
 
   return (
-   // In your Portfolio.jsx file
-<div className="portfolio-page">
-    <div className="our-work-container">
-        <h2 className="our-work-title">Our Work</h2>
-        <p className="our-work-subtitle">A curated selection of our projects...</p>
-        <div className="filter-buttons">
-            {/* Your buttons here */}
-        </div>
-    </div>
-    
-    <div className="video-grid-container">
-        {/* Your video cards here */}
-    </div>
-
- <div className="video-grid-container">
-      {/* The Grid of Portfolio Items */}
-      <PortfolioGrid items={filteredItems} />
-    </div>
+    <div className="portfolio-page">
+      <div className="video-background-container">
+        <video autoPlay loop muted playsInline className="background-video">
+          <source src="/porfoliovideo.mp4" type="video/mp4" />
+        </video>
+        <div className="video-overlay"></div>
+      </div>
+      <div className="portfolio-content">
+        {renderContent()}
+      </div>
     </div>
   );
 };

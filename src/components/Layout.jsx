@@ -12,7 +12,6 @@ const Layout = () => {
   return (
     // The background component wraps EVERYTHING.
     <VideoBackground videoSrc="/video/background-video.mp4" imageSrc="/images/backgroundimg_01.jpeg" duration={5000}>
-    
       {/* 
         This single div inside the background component will contain
         your entire page structure and will be the scrollable element.
@@ -22,13 +21,13 @@ const Layout = () => {
 
         {/* The main content area that will grow */}
         <main>
+          <VideoBackground videoSrc='.\public\video\background-video.mp4'></VideoBackground>
           <Outlet />
         </main>
 
         {/* The footer is now correctly at the END of the content flow */}
         <Footer />
       </div>
-
     </VideoBackground>
   );
 };

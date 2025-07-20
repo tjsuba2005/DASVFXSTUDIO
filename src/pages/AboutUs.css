@@ -1,160 +1,76 @@
-/* src/pages/AboutUsPage.css */
+/* src/pages/AboutUs.css */
 
-.about-us-page {
-  padding-bottom: 1rem; /* Add extra space at the bottom */
-}
-
-/* --- Header Styles --- */
-.about-header {
-  text-align: center;
-  padding: 0rem 0;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--primary-color);
-}
-
-.about-header h1 {
-  font-size: 3rem;
-  color: var(--accent-color);
-  margin-bottom: 0.5rem;
-}
-
-.about-subtitle {
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  opacity: 0.8;
-}
-
-/* --- Mission Section Styles --- */
-.mission-section {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto 4rem auto;
-}
-
-.mission-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.mission-section p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 1rem;
-}
-
-/* --- Team Section Styles --- */
-.team-section {
-  margin-bottom: 1rem;
-}
-
-.team-section h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.team-grid {
+/* --- Main Layout Container --- */
+.about-us-layout {
   display: grid;
-  /* This creates a responsive grid that fits as many columns as possible */
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  /* This still defines 3 columns: an empty one, one for content, and another empty one */
+  grid-template-columns: 1fr 2.5fr 1fr; 
+  align-items: center; /* Vertically centers the content block, looks better on tall screens */
+  gap: 2rem;
+  padding: 4rem 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 80vh;
+  animation: fadeIn 1s ease-in-out;
 }
 
-.team-member {
-  text-align: center;
-  background: rgba(189, 231, 228, 0.05);
-  padding: 1rem 1rem;
-  border-radius: 8px;
-  transition: transform 0.3s ease, background 0.3s ease;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.team-member:hover {
-  transform: translateY(-10px);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.team-member img {
-  width: 150px;
-  height: 100px;
-  border-radius: 50%; /* Makes the image circular */
-  object-fit: cover;
-  border: 4px solid var(--secondary-colorr);
-  margin-bottom: 1rem;
-}
-
-.team-member h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.25rem;
-  color: var(--secondary-color);
-}
-
-.team-member p {
-  color: var(--secondary-color);
-}
-
-/* --- Company Profile Section --- */
-.company-profile-section {
-  display: flex; /* Helps center the details box */
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-/* Using the same class as homepage for consistency */
-.company-details {
-  background-color: rgba(80, 174, 200, 0.2);
-  padding: 1rem;
-  border-radius: 8px;
-  border-left: 4px solid var(--secondary-color);
-  width: 100%;
-  max-width: 600px;
-}
-
-.company-details h3 {
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-}
-
-.company-details dl div {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(132, 226, 8, 0.1);
-}
-
-.company-details dt {
-  font-weight: bold;
-  color: var(--text-color);
-}
-
-.company-details dd {
-  color: var(--text-color);
-  text-align: right;
-  margin-left: 1rem; /* Ensure space between key and value */
-}
+/* --- Removed Unused Sidebar CSS --- */
+/* The old sidebar styles were here but are no longer needed as there are no sidebar images. */
 
 
-/* --- Call to Action (CTA) Section --- */
-.cta-section {
-  text-align: center;
-  padding: 2rem;
-  background: rgba(232, 229, 229, 0.2);
-  border-radius: 8px;
+/* --- Center Content Column --- */
+.about-us-content {
+  /* THIS IS THE KEY FIX: Tells the content to live in the 2nd grid column */
+  grid-column: 2 / 3;
+
+  color: #e0e0e0;
+  font-family: 'Poppins', sans-serif;
+  background-color: rgba(6, 23, 40, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem 3.5rem;
 }
-.cta-section h2 {
-  margin-bottom: 1.5rem;
+
+/* --- General Content Styling & Spacing --- */
+.about-us-content > * + * { 
+  margin-top: 2.5rem; 
 }
-.cta-button {
-  display: inline-block;
-  background: var(--secondary-color);
-  color: #0b0b0d; /* Dark background color for text */
-  padding: 0.75rem 2rem;
-  border-radius: 5px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: bold;
-  text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+.about-header { 
+  text-align: center; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+  padding-bottom: 2rem; 
+  margin-top: 0; 
 }
-.cta-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px var(--secondary-color);
+
+/* Typography Enhancements */
+.about-us-content h1 { font-size: 2.8rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem; color: #ffffff; }
+.about-us-content h2 { font-size: 2rem; font-weight: 600; color: #87ceeb; margin-bottom: 1rem; }
+.about-us-content h3 { font-size: 1.5rem; font-weight: 500; color: #ffffff; margin-bottom: 1rem; }
+.about-subtitle { font-size: 1.1rem; color: #b0c4de; font-style: italic; }
+.about-us-content p { line-height: 1.7; color: #cccccc; }
+
+/* --- Company Profile Definition List --- */
+.profile-list {
+  /* FIX: Reverted to display: grid. It's the correct tool for a 2-column key-value list. */
+  /* Using 'flex' here would just put all items in one row. */
+  display: grid;
+  grid-template-columns: auto 1fr; /* Label, Value */
+  gap: 0.75rem 1.5rem; /* Row gap, Column gap */
+  margin-top: 1rem;
 }
+
+.profile-list dt { font-weight: 600; color: #87ceeb; }
+.profile-list dd { margin-left: 0; color: #e0e0e0; }
+
+/* --- Call-to-Action Section --- */
+.cta-section { text-align: center; background-color: rgba(0, 0, 0, 0.2); padding: 2rem; border-radius: 8px; margin-top: 3rem; }
+.cta-link-button { display: inline-block; background: linear-gradient(90deg, #87ceeb, #4682b4); color: #061728; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: transform 0.3s ease, box-shadow 0.3s ease; margin-top: 1rem; }
+.cta-link-button:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(135, 206, 235, 0.4); }

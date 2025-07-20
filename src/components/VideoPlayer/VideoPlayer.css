@@ -1,40 +1,92 @@
-/*
-  This new class is for the self-hosted <video> element.
-  It's simpler because the <video> tag handles its own aspect ratio
-  when width and height are 100%.
-*/
-.video-responsive-self-hosted {
-  width: 100%;
-  max-width: 900px; /* Optional: Set a max-width to prevent it from becoming too large on huge screens */
-  margin: 0 auto; /* Center the player if max-width is used */
-  border: 2px solid var(--accent-color);
-  border-radius: 1px;
-  box-shadow: 0 0 20px var(--accent-color);
-  overflow: hidden; /* Ensures the border-radius is applied to the video corners */
-  background-color: #000; /* Black background in case video is slow to load */
-}
+/* src/components/VideoPlayer/VideoPlayer.css (Updated & Complete Version) */
 
-/* Make sure the video element itself fills its container */
-.video-responsive-self-hosted video {
-  display: block; /* Removes any extra space below the video */
-  width: 100%;
-}
-
-/* Keep the old styles if you might still use YouTube embeds elsewhere */
-.video-responsive {
-  overflow: hidden;
-  padding-bottom: 56.25%;
-  position: relative;
-  height: 0;
-  border: 2px solid var(--accent-color);
-  border-radius: 1px;
-  box-shadow: 0 0 20px var(--accent-color);
-}
-
-.video-responsive iframe {
-  left: 0;
+/* The main fullscreen overlay */
+.video-player-overlay {
+  position: fixed;
   top: 0;
-  height: 100%;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background-color: #000; /* Solid black for a cinematic feel */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; /* Ensure it's on top of all other page content */
+  animation: fadeIn 0.4s ease-out;
+} 
+
+/* The container that holds the video element and its title */
+.video-player-container {
+  position: relative; /* Needed for positioning the title and close button */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The actual <video> element */
+.video-element {
+  /* --- KEY FIX FOR SCALING --- */
+  /* This ensures the video fits within the screen, maintaining its aspect ratio. */
+  /* It will be "letterboxed" or "pillarboxed" against the black background. */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  /* Add a subtle shadow for a "screen" effect */
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+/* --- NEW: Close Button --- */
+/* A crucial element for user experience in a fullscreen modal */
+.close-button {
   position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1010; /* Make sure it's on top of everything */
+  transition: all 0.3s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.close-button:hover {
+  color: #fff;
+  transform: scale(1.2) rotate(90deg);
+}
+
+/* --- NEW: Video Title --- */
+/* Positioned at the bottom with a gradient for readability */
+.video-player-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 4rem 2rem 2rem; /* Extra padding at the top for the gradient */
+  font-family: 'Montserrat', sans-serif; /* A nice modern font */
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  /* This gradient ensures text is readable over any video content */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  /* Prevent mouse events from being captured by the title overlay */
+  pointer-events: none; 
+}
+
+
+/* --- Animation for the overlay fade-in effect --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

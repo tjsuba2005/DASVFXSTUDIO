@@ -1,29 +1,70 @@
-layout-container {
-  /* Path to your image, relative to the public folder or imported */
-  background-image: url('public\background.jpg'); /* Adjust the path as needed */
+/* src/pages/Layout.css */
 
-  /* Make sure the container is at least as tall as the viewport */
-  min-height: 100vh;
+/*
+  This file controls the main structure of your application's layout,
+  including the shell that holds the Navbar, main content, and Footer.
+*/
 
-  /* Background image behavior */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  
-  /* This creates a nice parallax effect when scrolling */
-  /* background-attachment: fixed; */
 
-  /* Use flexbox to make the footer stick to the bottom */
+/* =================================================================== */
+/*          1. STICKY FOOTER & MAIN LAYOUT FIX (FLEXBOX)               */
+/* =================================================================== */
+
+/*
+  This is the primary container for your page layout.
+  In your Layout.jsx, this is likely the top-level div.
+*/
+.main-layout-wrapper {
+  /* Step 1: Turn the wrapper into a vertical flex container. */
   display: flex;
   flex-direction: column;
+
+  /* Step 2: Ensure the wrapper is AT LEAST as tall as the browser window. */
+  /* This is the key to solving the footer problem on short pages. */
+  min-height: 100vh; 
   
+  /*
+    Note: This wrapper will scroll naturally if the content inside 
+    (like a long "About Us" page) is taller than the viewport.
+  */
 }
 
-/* 
-  This is a small but important addition for sticky footers.
-  It tells the <main> content area to grow and take up any available space,
-  pushing the footer down to the bottom of the screen.
+
+/* =================================================================== */
+/*          2. MAIN CONTENT AREA STYLING                               */
+/* =================================================================== */
+
+/*
+  This targets the <main> element which holds your page content (<Outlet />).
 */
-.layout-container main {
+main {
+  /* Step 3: This is the "magic" part. */
+  /* It tells the main content area to "grow" and take up any available */
+  /* empty space, which effectively pushes the footer down to the bottom. */
   flex-grow: 1;
+
+  /* Add some default padding to prevent content from touching the screen edges. */
+  /* This provides breathing room for your sections. */
+  padding: 3rem 2rem; 
+  width: 100%;
+  min-height: 100%;
+}
+
+
+/* =================================================================== */
+/*          3. RESPONSIVE ADJUSTMENTS                                  */
+/* =================================================================== */
+
+@media (max-width: 768px) {
+  /* On smaller screens like tablets and phones, reduce the horizontal padding */
+  main {
+    padding: 3rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On very small screens, further reduce padding */
+  main {
+    padding: 2rem 1rem;
+  }
 }

@@ -1,76 +1,47 @@
 /* src/components/Footer/Footer.css */
 
-/*
-  Updated Color Palette to match the new DASVFX Studio design.
-  You should place these variables in a global CSS file (like index.css) 
-  so your Navbar and other components can use them too.
-*/
-:root {
-  /* The deep, dark navy blue from the top of your background */
-  --footer-bg-color: #0D1B3E;
-
-  /* The light, soft blue/lavender color used for text */
-  --footer-text-color: #cdd6f4;
-
-  /* Pure white for strong contrast on headings */
-  --footer-heading-color: #ffffff;
-
-  /* The vibrant, bright blue from the "Transforming Imagination" text and background lines */
-  --footer-accent-color: #00aaff;
-
-  /* A slightly lighter version for hover states */
-  --footer-hover-color: #58c6ff;
-
-  /* A very subtle border color for separators */
-  --footer-border-color: rgba(0, 170, 255, 0.2);
-}
-
-/* --- 1. Main Footer Wrapper --- */
+/* Main footer container */
 .footer {
-  background-color: var(--footer-bg-color);
-  color: var(--footer-text-color);
-  padding: 1rem 1rem 1rem; /* Ample padding: top, left/right, bottom */
-  font-family: sans-serif;
-  /* Add a subtle top border to separate it from the page content */
-  border-top: 2px solid var(--footer-accent-color);
+  background-color: #0D1B3E; 
+  color: #cdd6f4; 
+  /* REDUCED PADDING: From '3rem 2rem 1.5rem' to make the top and bottom smaller */
+  padding: 1rem 2rem 1rem; 
+  border-top: 1px solid rgba(0, 170, 255, 0.2);
+  font-family: 'Poppins', sans-serif;
 }
 
-/* --- 2. Inner Content Container --- */
-/* In Footer.css */
-
-/* In Footer.css */
-.footer-container {
-  
-  /* --- THIS IS THE LINE TO CHANGE --- */
-  max-width: 1900px; /* Make it match the Navbar and Portfolio */
-
+/* This grid container holds the main content columns */
+.footer-content-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* REDUCED GAP: Smaller space between columns */
+  gap: 1rem; 
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 2.5rem;
+  width: 100%;
 }
-/* --- 3. Individual Footer Columns --- */
+
 .footer-section {
-  flex: 1;
-  min-width: 250px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .footer-section h4 {
-  color: var(--footer-heading-color);
-  font-size: 1.2rem;
-  margin-bottom: 1rem; /* More space below heading */
+  color: #ffffff;
+  font-size: 1.1rem;
   font-weight: 600;
+  margin-top: 0;
+  /* REDUCED MARGIN: Less space below headings */
+  margin-bottom: 0.75rem; 
 }
 
-.footer-section.about p {
-  max-width: 350px;
-  line-height: 1;
+.footer-section p {
+  line-height: 1.2; /* Reduced line-height slightly */
+  margin: 0;
+  color: #a6b1d9;
 }
 
-/* --- 4. Links and Lists --- */
+/* Styling for the lists (Quick Links) */
 .footer-section ul {
   list-style: none;
   padding: 0;
@@ -78,55 +49,42 @@
 }
 
 .footer-section ul li {
-  margin-bottom: 0.75rem;
+  /* REDUCED MARGIN: Tighter spacing between links */
+  margin-bottom: 0.5rem; 
 }
 
-.footer-section a {
-  color: var(--footer-text-color); /* Links start with the base text color */
+.footer-section ul a,
+.social-links a {
+  color: #cdd6f4;
   text-decoration: none;
-  transition: color 0.2s ease-in-out;
+  transition: color 0.3s ease;
 }
 
-.footer-section a:hover {
-  color: var(--footer-accent-color); /* Highlight with the accent color on hover */
-  text-decoration: none; /* Let's keep it clean without underlines */
+.footer-section ul a:hover,
+.social-links a:hover {
+  color: #00aaff;
 }
 
-/* --- 5. Social Media Icons --- */
-.social-icons {
+/* Styling for social links */
+.social-links {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
+  /* REDUCED GAP: Tighter spacing for social links */
+  gap: 0.5rem; 
 }
 
-/* --- 6. The Bottom Bar (Copyright Text) --- */
-.footer-bottom {
+/* --- STYLING FOR THE COPYRIGHT SECTION --- */
+.footer-copyright {
   text-align: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--footer-border-color); /* Subtle separator line */
-  font-size: 0.9rem;
-  color: rgba(205, 214, 244, 0.7); /* Slightly muted text color */
+  /* REDUCED MARGIN: Less space between main content and copyright */
+  margin-top: 1rem; 
+  /* REDUCED PADDING: Less space above the copyright text */
+  padding-top: 1rem; 
+  border-top: 1px solid rgba(0, 170, 255, 0.2);
 }
 
-/* --- 7. Responsive Design for Smaller Screens --- */
-@media (max-width: 768px) {
-  .footer {
-    padding-left: .5rem;
-    padding-right: .5rem;
-  }
-  .footer-container {
-    flex-direction: column;
-    align-items: left;
-    text-align: center;
-  }
-  .footer-section {
-    text-align: center;
-  }
-  .social-icons {
-    flex-direction: row;
-    justify-content: center;
-    gap: 1.5rem;
-  }
+.footer-copyright p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #8a99c0;
 }

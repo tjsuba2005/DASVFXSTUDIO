@@ -1,85 +1,62 @@
-import React, { useState } from 'react';
-import './ContactPage.css'; // Import the stylesheet
+// src/pages/ContactPage.jsx
 
-// Import icons for contact details
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import React from 'react';
+import './ContactPage.css'; // We will create this CSS file next
+
+// For icons, you can use a library like react-icons
+// Example: import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 const ContactPage = () => {
-  // State to manage form inputs
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-
-  // Handler for input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
-
-  // Handler for form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // **IMPORTANT**: In a real app, you would integrate a service like EmailJS,
-    // Formspree, or a custom backend here to actually send the email.
-    // For now, we'll just log the data to the console.
-    console.log('Form data submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
-    // Optionally, reset the form
-    setFormData({ name: '', email: '', subject: '', message: '' });
-  };
-
   return (
-    <div className="contact-page container">
+    <div className="contact-page-wrapper">
+      
       <header className="contact-header">
         <h1>Get in Touch</h1>
         <p>Have a project in mind? We'd love to hear from you. Let's create something amazing together.</p>
       </header>
 
-      <div className="contact-container">
-        <div className="contact-details">
+      {/* This container will hold our two columns */}
+      <div className="contact-content-container">
+
+        {/* --- COLUMN 1: Contact Information --- */}
+        <div className="contact-info-column">
           <h2>Contact Information</h2>
-          <p>Fill up the form and our team will get back to you within 24 hours.</p>
-          <div className="detail-item">
-            <span className="detail-icon"><FaPhone /></span>
-            <span>+91 9945002480</span>
-          </div>
-          <div className="detail-item">
-            <span className="detail-icon"><FaEnvelope /></span>
-            <span>contact@dasvfx.com</span>
-          </div>
-          <div className="detail-item">
-            <span className="detail-icon"><FaMapMarkerAlt /></span>
-            <span>Bangalore</span>
-          </div>
+          <p className="info-subtitle">Fill up the form and our team will get back to you within 24 hours.</p>
+          <ul className="info-list">
+            <li>
+              {/* <FaPhone className="info-icon" /> */}
+              <span>+91 9945002480</span>
+            </li>
+            <li>
+              {/* <FaEnvelope className="info-icon" /> */}
+              <span>contact@dasvfx.com</span>
+            </li>
+            <li>
+              {/* <FaMapMarkerAlt className="info-icon" /> */}
+              <span>Bangalore</span>
+            </li>
+          </ul>
         </div>
 
-        <div className="contact-form-container">
-          <form onSubmit={handleSubmit} className="contact-form">
+        {/* --- COLUMN 2: Contact Form --- */}
+        <div className="contact-form-column">
+          <form>
             <div className="form-group">
               <label htmlFor="name">Name</label>
-              <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+              <input type="text" id="name" name="name" required autoComplete="name"/>
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="subject">Subject</label>
-              <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} required />
+              <input type="email" id="email" name="email" required autoComplete="email"/>
             </div>
             <div className="form-group">
               <label htmlFor="message">Message</label>
-              <textarea id="message" name="message" value={formData.message} onChange={handleChange} required></textarea>
+              <textarea id="message" name="message" rows="5" required autoComplete="message"></textarea>
             </div>
-            <button type="submit" className="submit-btn">Send Message</button>
+            <button type="submit" className="submit-button">Send Message</button>
           </form>
         </div>
+        
       </div>
     </div>
   );

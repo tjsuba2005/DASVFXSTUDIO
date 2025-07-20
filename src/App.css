@@ -1,0 +1,27 @@
+/* --- Global Resets & Body Styles --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  background-color: #020a14; /* A base background color */
+  color: #f0f0f0;
+}
+
+/* --- THE STICKY FOOTER SOLUTION --- */
+
+/* 1. Target the root div where your React app is mounted */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* CRITICAL: Make the app container fill the entire screen height */
+}
+
+/* 2. Target the main content area inside your Layout component */
+/* We will add this className to the <main> tag in Layout.js */
+.app-content {
+  flex-grow: 1; /* CRITICAL: This tells the main content to expand and push the footer down */
+}

@@ -1,103 +1,64 @@
-/* src/components/BackgroundWrapper/BackgroundWrapper.css */
-
-.background-wrapper {
-  /* --- BACKGROUND IMAGE --- */
-  /* This assumes your image is in `public/background.jpg` */
-  background-image: url('/images/backgroundimg_01.jpeg');
-
-  /* --- STYLES TO MAKE IT A FULLSCREEN BACKGROUND --- */
-  min-height: 100vh; /* At least the full height of the viewport */
-  background-size: cover; /* Cover the entire area without stretching */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-attachment: fixed; /* Creates a cool parallax scrolling effect */
-
-  /* --- FLEXBOX FOR LAYOUT --- */
-  /* This is crucial for making your Navbar/Main/Footer layout work correctly */
-  display: flex;
-  flex-direction: column;
-}
-.background-wrapper {
-  /* Layer a semi-transparent gradient ON TOP of the image */
-  background-image: 
-        url('/images/backgroundimg_01.jpeg');
-  
-  /* ... the rest of the styles are the same ... */
-  min-height: 100vh;
-  background-size: cover;
-  /* ... etc ... */
-}
 /* src/components/VideoBackground/VideoBackground.css */
+
+/* --- Main container that holds the video AND the content --- */
 .video-background-container {
-  position: relative;
-  width: 100%;
+  position: fixed; /* Fix it to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /* Hide anything that spills out */
+  z-index: 0; /* Base layer */
 }
+
+/* --- The Video Element --- */
 #bg-video {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translateX(-50%) translateY(-50%);
   min-width: 100%;
   min-height: 100%;
   width: auto;
   height: auto;
-  z-index: -100;
-  transform: translateX(-50%) translateY(-50%);
-}
-/* ... etc ... */
-/* src/components/VideoBackground/VideoBackground.css */
-
-/* --- KEEP ALL YOUR EXISTING STYLES AT THE TOP --- */
-.video-background-container {
-  /* ... existing styles ... */
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  /* Add a transition for the background image fade-in */
-  transition: background-image 1s ease-in-out;
+  z-index: 1; /* Sits on top of the container, but below the overlay */
 }
 
-#bg-video {
-  /* ... existing styles ... */
+/* --- The Dark Overlay --- */
+/* This adds the dark tint so text is more readable */
+.background-overlay {
   position: absolute;
-  /* ... etc ... */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 2; /* Sits on top of the video, but below the content */
 }
 
+/* --- The SCROLLABLE Content Container (MOST IMPORTANT PART) --- */
+.content-container {
+  position: relative; /* Establishes a new stacking context */
+  z-index: 3;         /* Sits on top of the video and overlay */
+  width: 100%;
+  height: 100%;       /* It needs a height to enable overflow */
+  overflow-y: auto;   /* THIS makes ONLY this container scrollable */
+}
 
-
-/* ================================================= */
-/*          START: NEW STYLES FOR FADE EFFECT        */
-/* ================================================= */
-
-/* This class is applied to the video when it should be visible */
+/* --- FADE EFFECT STYLES --- */
 .video-active {
   opacity: 1;
-  transition: opacity 1s ease-in-out; /* Smooth transition */
-}
-
-/* This class is applied to the video when it should be hidden */
-.video-hidden {
-  opacity: 0; /* Fade it out */
   transition: opacity 1s ease-in-out;
 }
 
-/* This class is applied to the main container after the video is done */
+.video-hidden {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
 .show-image-bg {
-  /* These are the same properties you'd use for a static image background */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-/* In VideoBackground.css or ImageBackground.css */
-
-.content-container {
-  position: relative;
-  z-index: 2; /* Sits on top of the overlay */
-  
-  /* --- KEY CHANGES --- */
-  height: 100%;       /* It needs a height to enable overflow */
-  overflow-y: auto;   /* This makes ONLY this container scrollable */
-  width: 100%;
+  transition: background-image 0.5s ease-in-out; /* Note: you can't fade a background-image, this is the best you can do */
 }

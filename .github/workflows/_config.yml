@@ -1,0 +1,14 @@
+# Site settings
+title: DAS VFX STUDIO
+description: "Your site description."
+
+# This is the critical part that fixes your error
+exclude:
+  - server/node_modules/
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  

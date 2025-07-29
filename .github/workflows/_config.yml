@@ -1,14 +1,17 @@
 # Site settings
 title: DAS VFX STUDIO
-description: "Your site description."
+description: "Your site's description"
 
-# This is the critical part that fixes your error
+# === THIS IS THE FIX FOR YOUR BUILD ERROR ===
+# Tell Jekyll to ignore these directories during the build.
 exclude:
   - server/node_modules/
   - node_modules/
-  - package.json
-  - package-lock.json
+  - .sass-cache/
+  - .jekyll-cache/
   - Gemfile
   - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - .gitignore
   - README.md
-  

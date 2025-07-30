@@ -43,11 +43,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
         
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Vite builds to the 'dist' directory by default
-          path: './dist'
+      
 
   deploy:
     environment:

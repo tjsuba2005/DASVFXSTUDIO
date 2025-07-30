@@ -1,0 +1,11 @@
+# 1. Ensure the package-lock.json file is up-to-date
+npm install
+
+# 2. Add the modified .gitignore and the (now un-ignored) package-lock.json
+git add .gitignore package-lock.json
+
+# 3. Commit these changes
+git commit -m "fix(ci): Update .gitignore and track package-lock.json"
+
+# 4. Push the commit to GitHub to trigger the workflow
+git push origin main

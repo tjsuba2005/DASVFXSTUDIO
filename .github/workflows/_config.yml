@@ -1,17 +1,25 @@
-# Site settings
-title: DAS VFX STUDIO
-description: "Your site's description"
+name: Build and Deploy Site
 
-# === THIS IS THE FIX FOR YOUR BUILD ERROR ===
-# Tell Jekyll to ignore these directories during the build.
-exclude:
-  - server/node_modules/
-  - node_modules/
-  - .sass-cache/
-  - .jekyll-cache/
-  - Gemfile
-  - Gemfile.lock
-  - package.json
-  - package-lock.json
-  - .gitignore
-  - README.md
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Add your build steps here, for example:
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16'
+
+      # - name: Install dependencies
+      #   run: npm install
+
+      # - name: Build site
+      #   run: npm run build

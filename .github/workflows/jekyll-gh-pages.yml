@@ -32,18 +32,29 @@ jobs:
         with:
           node-version: 20
           
+      # --- FIX STARTS HERE ---
+
       - name: Install dependencies
-        # This will install Vite and other packages from your root package.json
+        # Tell npm to run inside the /client directory
+        working-directory: ./client
         run: npm ci
         
       - name: Build
-        # This will run "vite build" as defined in your package.json scripts
+        # Tell npm to run inside the /client directory
+        working-directory: ./client
         run: npm run build
+        
+      # --- FIX ENDS HERE ---
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        
-      
+
+      # --- NEW STEP REQUIRED ---
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload from the build output directory inside 'client'
+          path: ./client/dist
 
   deploy:
     environment:

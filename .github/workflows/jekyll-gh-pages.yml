@@ -32,24 +32,26 @@ jobs:
         with:
           node-version: 20
           
-      # --- FIX STARTS HERE ---
-
       - name: Install dependencies
-        # Tell npm to run inside the /client directory
         working-directory: ./client
         run: npm ci
         
       - name: Build
-        # Tell npm to run inside the /client directory
         working-directory: ./client
+        # Inject your secrets as environment variables for the build step
+        env:
+          # Assumes you are using a tool like Vite that requires the VITE_ prefix
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          VITE_REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
+          VITE_GOOGLE_DRIVE_ROOT_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_ROOT_FOLDER_ID }}
+          # !! SECURITY WARNING !! Do not expose your client secret in frontend code.
+          # This is only here to match your list, but you should remove it.
+          VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: npm run build
-        
-      # --- FIX ENDS HERE ---
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # --- NEW STEP REQUIRED ---
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -2,20 +2,15 @@
 name: Deploy Frontend to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -33,18 +28,16 @@ jobs:
           node-version: 20
           
       - name: Install dependencies
-        # FIX: Point to the correct nested directory
-        working-directory: ./DASVFXSTUDIO/client
+        # Simple path now works because you fixed the structure
+        working-directory: ./client
         run: npm ci
         
       - name: Build
-        # FIX: Point to the correct nested directory
-        working-directory: ./DASVFXSTUDIO
+        working-directory: ./client
         env:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           VITE_REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
           VITE_GOOGLE_DRIVE_ROOT_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_ROOT_FOLDER_ID }}
-          # !! SECURITY WARNING !! Do not expose your client secret in frontend code.
           VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: npm run build
         
@@ -54,8 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # FIX: Update the path to find the build output in the nested folder
-          path: ./DASVFXSTUDIO/client/dist
+          path: ./client/dist
 
   deploy:
     environment:
@@ -67,4 +59,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        

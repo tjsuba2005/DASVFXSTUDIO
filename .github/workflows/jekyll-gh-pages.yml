@@ -33,19 +33,18 @@ jobs:
           node-version: 20
           
       - name: Install dependencies
-        working-directory: ./client
+        # FIX: Point to the correct nested directory
+        working-directory: ./DASVFXSTUDIO/client
         run: npm ci
         
       - name: Build
-        working-directory: ./client
-        # Inject your secrets as environment variables for the build step
+        # FIX: Point to the correct nested directory
+        working-directory: ./DASVFXSTUDIO/client
         env:
-          # Assumes you are using a tool like Vite that requires the VITE_ prefix
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           VITE_REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
           VITE_GOOGLE_DRIVE_ROOT_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_ROOT_FOLDER_ID }}
           # !! SECURITY WARNING !! Do not expose your client secret in frontend code.
-          # This is only here to match your list, but you should remove it.
           VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: npm run build
         
@@ -55,8 +54,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload from the build output directory inside 'client'
-          path: ./client/dist
+          # FIX: Update the path to find the build output in the nested folder
+          path: ./DASVFXSTUDIO/client/dist
 
   deploy:
     environment:

@@ -50,9 +50,9 @@ app.use(session({
 
 // --- Google OAuth2 Client Configuration ---
 const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.REDIRECT_URI
+  process.env.VITE_GOOGLE_CLIENT_ID,
+  process.env.VITE_GOOGLE_CLIENT_SECRET,
+  process.env.VITE_REDIRECT_URI
 );
 // ... top of your server.js
 

@@ -69,7 +69,15 @@ const scopes = [
 ];
 
 // --- Authentication Routes ---
+// ... near the middle of your file ...
 
+app.get('/api/auth/status', (req, res) => {
+  if (req.session && req.session.tokens) {
+    res.json({ isAuthenticated: true, user: req.session.user });
+  } else {
+    res.json({ isAuthenticated: false });
+  }
+});
 app.get('/auth/google', (req, res) => {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',

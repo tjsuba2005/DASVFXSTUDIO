@@ -69,15 +69,7 @@ const scopes = [
 ];
 
 // --- Authentication Routes ---
-// ... near the middle of your file ...
 
-app.get('/api/auth/status', (req, res) => {
-  if (req.session && req.session.tokens) {
-    res.json({ isAuthenticated: true, user: req.session.user });
-  } else {
-    res.json({ isAuthenticated: false });
-  }
-});
 app.get('/auth/google', (req, res) => {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
@@ -102,13 +94,12 @@ app.get('/auth/google/callback', async (req, res) => {
         picture: userInfo.picture
     };
 
-    req.session.save(() => {
-        // CHANGE 3: Redirect to your production frontend URL.
-        const frontendUrl = process.env.NODE_ENV === 'production' 
-          ? 'https://tjsuba2005.github.io/portfolio' 
-          : 'http://localhost:5173/portfolio';
-        res.redirect(frontendUrl);
-    });
+   req.session.save(() => {
+    const frontendUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://tjsuba2005.github.io/DASVFXSTUDIO/portfolio' // <-- ADD /DASVFXSTUDIO/ here
+      : 'http://localhost:5173/portfolio';
+    res.redirect(frontendUrl);
+});
   } catch (error) {
     console.error('Error getting tokens:', error.message);
     res.status(500).send('Authentication failed during callback.');

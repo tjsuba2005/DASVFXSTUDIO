@@ -6,7 +6,8 @@ import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import './PortfolioPage.css';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL =import.meta.env.VITE_API_URL;
+
 
 const PortfolioPage = () => {
   // Get the user status directly from our global context

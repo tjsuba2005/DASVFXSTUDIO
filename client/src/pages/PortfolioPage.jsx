@@ -6,7 +6,7 @@ import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import './PortfolioPage.css';
 
-const BACKEND_URL =import.meta.env.VITE_API_URL;
+const BACKEND_URL =import.meta.env.VITE_API_BASE_URL; // 'http://localhost:5000'; // Use the environment variable or fallback to localhost
 
 
 const PortfolioPage = () => {

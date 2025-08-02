@@ -22,6 +22,36 @@ const allowedOrigins = [
   'https://tjsuba2005.github.io'    // Your deployed frontend on GitHub Pages
 ];
 
+const frontendURL = "https://tjsuba2005.github.io";
+
+const corsOptions = {
+  // IMPORTANT: You must specify the exact origin of your frontend. A wildcard '*' is not allowed
+  // when you use credentials.
+  origin: frontendURL, 
+
+  // IMPORTANT: This header is REQUIRED to allow cookies or session data to be sent.
+  credentials: true, 
+  
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
+
+// Use the configured cors middleware
+app.use(cors(corsOptions));
+
+// --- END: PRECISE CORS CONFIGURATION ---
+
+
+// ... rest of your server code (routes like /login, /users, etc.)
+// For example:
+app.use(express.json()); // To parse request bodies
+
+app.post('/api/login', (req, res) => {
+  // Your login logic here
+  // If successful, you might set a cookie
+  res.cookie('session_id', 'your_session_token', { httpOnly: true, secure: true, sameSite: 'none' });
+  res.status(200).json({ message: "Login successful!" });
+});
+/*
 const corsOptions = {
   origin: function (origin, callback) {
     // allow requests with no origin (like mobile apps or curl requests)
@@ -33,11 +63,11 @@ const corsOptions = {
     return callback(null, true);
   }
 };
-
 // Make sure you are using these options
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(express.json());
+*/
 
 app.use(session({
   secret: process.env.SESSION_SECRET, // Use a strong secret in production

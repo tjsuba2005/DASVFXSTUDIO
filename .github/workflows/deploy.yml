@@ -1,0 +1,55 @@
+name: Deploy Frontend to GitHub Pages
+
+on:
+  # This workflow runs on any push to your "main" branch
+  push:
+    branches:
+      - main
+  # This also allows you to run it manually from the "Actions" tab on GitHub
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # This is the key: it runs on Linux!
+
+    # These permissions are required for the deployment actions to work
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Sets up the Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # Or whatever version you prefer, e.g., 18
+
+      # 3. Installs dependencies and builds your React app
+      - name: Install and Build
+        run: |
+          cd client
+          npm install
+          npm run build
+      
+      # 4. Configures the GitHub Pages deployment
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # 5. Uploads the build output (your 'dist' folder) as an artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # The path to the folder that should be uploaded
+          path: './client/dist'
+          
+      # 6. Deploys the artifact to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        

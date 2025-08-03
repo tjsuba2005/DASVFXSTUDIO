@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 // This custom hook will manage the logic for checking auth status
 export const useAuthStatus = () => {
@@ -33,6 +33,18 @@ export const useAuthStatus = () => {
     checkAuth();
   }, []); // The empty dependency array means this only runs once
 
+
+   const logout = async () => {
+    try {
+      await axios.post(`${BACKEND_URL}/api/auth/logout`, {}, {
+        withCredentials: true,
+      });
+      // After successful logout on the server, update the local state
+      setUser(null);
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
   // The hook returns the state values for the component to use
-  return { user, isLoading };
+  return { user, isLoading, logout  };
 };

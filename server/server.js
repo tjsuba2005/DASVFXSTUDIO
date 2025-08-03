@@ -1,5 +1,5 @@
 // ===================================================================
-// --- Final, Hardened, and Deployable server.js ---
+// --- Refactored & Hardened server.js ---
 // ===================================================================
 
 import dotenv from 'dotenv';
@@ -7,143 +7,196 @@ import express from 'express';
 import { google } from 'googleapis';
 import cors from 'cors';
 import session from 'express-session';
-
 dotenv.config();
+// --- 1. Environment & Initial Setup ---
+
+// Load environment variables from a .env file
+
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
-// --- Middleware Setup ---
+// --- 2. Core Middleware ---
 
-// CHANGE 1: Define allowed origins for both development and production.
-// In your server.js file
-
+// Enable CORS with dynamic origin checking and credentials support
 const allowedOrigins = [
-  'http://localhost:5173',        // Your local frontend for development
-  'https://tjsuba2005.github.io'    // Your deployed frontend on GitHub Pages
+  process.env.FRONTEND_URL_DEV,   // e.g., 'http://localhost:5173'
+  process.env.FRONTEND_URL_PROD,  // e.g., 'https://tjsuba2005.github.io'
 ];
 
-const frontendURL = "https://tjsuba2005.github.io";
-
-const corsOptions = {
-  // IMPORTANT: You must specify the exact origin of your frontend. A wildcard '*' is not allowed
-  // when you use credentials.
-  origin: frontendURL, 
-
-  // IMPORTANT: This header is REQUIRED to allow cookies or session data to be sent.
-  credentials: true, 
-  
-  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
-};
-
-// Use the configured cors middleware
-app.use(cors(corsOptions));
-
-// --- END: PRECISE CORS CONFIGURATION ---
-
-
-// ... rest of your server code (routes like /login, /users, etc.)
-// For example:
-app.use(express.json()); // To parse request bodies
-
-app.post('/api/login', (req, res) => {
-  // Your login logic here
-  // If successful, you might set a cookie
-  res.cookie('session_id', 'your_session_token', { httpOnly: true, secure: true, sameSite: 'none' });
-  res.status(200).json({ message: "Login successful!" });
-});
-/*
-const corsOptions = {
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl requests)
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('This origin is not allowed by CORS'));
     }
-    return callback(null, true);
-  }
-};
-// Make sure you are using these options
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
-app.use(express.json());
-*/
+  },
+  credentials: true, // IMPORTANT: Allows session cookies to be sent from the frontend
+}));
 
+// Parse JSON request bodies
+app.use(express.json());
+
+// Configure and enable session management
 app.use(session({
-  secret: process.env.SESSION_SECRET, // Use a strong secret in production
-  resave: false,
-  saveUninitialized: false,
+  secret: process.env.SESSION_SECRET, // Secret used to sign the session ID cookie
+  resave: false,                      // Don't save session if unmodified
+  saveUninitialized: false,           // Don't create a session until something is stored
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    secure: IS_PRODUCTION,            // Use secure cookies in production (requires HTTPS)
+    httpOnly: true,                   // Prevents client-side JS from reading the cookie
+    maxAge: 1000 * 60 * 60 * 24,      // Cookie expires in 24 hours
   }
 }));
 
-// --- Google OAuth2 Client Configuration ---
 
-// CHANGE 2: Simplify environment variable names (no VITE_ prefix needed on backend).
+// --- 3. Google OAuth2 Client & Scopes ---
+
+// The redirect URI must be a BACKEND route that is authorized in Google Cloud Console
 const oauth2Client = new google.auth.OAuth2(
-  process.env.VITE_GOOGLE_CLIENT_ID,
-  process.env.VITE_GOOGLE_CLIENT_SECRET,
-  process.env.VITE_REDIRECT_URI // This will be your production URL
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI // e.g., http://localhost:5000/auth/google/callback
 );
 
 const scopes = [
-  'https://www.googleapis.com/auth/drive.readonly',
-  'https://www.googleapis.com/auth/drive.file',
   'https://www.googleapis.com/auth/userinfo.profile',
-  'https://www.googleapis.com/auth/drive'
+  'https://www.googleapis.com/auth/userinfo.email',
+  'https://www.googleapis.com/auth/drive.readonly',
 ];
 
-// --- Authentication Routes ---
 
+// --- 4. Authentication Routes ---
+
+// Route to generate the Google Auth URL for the frontend
 app.get('/auth/google', (req, res) => {
   const authUrl = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    prompt: 'consent',
+    access_type: 'offline', // Required to get a refresh token for long-term access
+    prompt: 'consent',      // Good for development to always see the consent screen
     scope: scopes,
   });
   res.json({ url: authUrl });
 });
 
+// Callback route that Google redirects to after successful authentication
 app.get('/auth/google/callback', async (req, res) => {
   const { code } = req.query;
+  if (!code) {
+    return res.status(400).send('Authentication failed: No authorization code provided.');
+  }
+
   try {
     const { tokens } = await oauth2Client.getToken(code);
-    req.session.tokens = tokens;
-
     oauth2Client.setCredentials(tokens);
+
+    // Get user profile information
     const oauth2 = google.oauth2({ version: 'v2', auth: oauth2Client });
     const { data: userInfo } = await oauth2.userinfo.get();
+
+    // Store essential info in the session
+    req.session.tokens = tokens;
     req.session.user = {
-        displayName: userInfo.name,
-        email: userInfo.email,
-        picture: userInfo.picture
+      name: userInfo.name,
+      email: userInfo.email,
+      picture: userInfo.picture,
     };
 
-   req.session.save(() => {
-    const frontendUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://tjsuba2005.github.io/DASVFXSTUDIO/portfolio' // <-- ADD /DASVFXSTUDIO/ here
-      : 'http://localhost:5173/portfolio';
-    res.redirect(frontendUrl);
-});
+    // Save session before redirecting to prevent race conditions
+    req.session.save(() => {
+      // Redirect the user's browser back to the frontend application
+      const frontendUrl = IS_PRODUCTION 
+        ? process.env.FRONTEND_URL_PROD 
+        : process.env.FRONTEND_URL_DEV;
+      res.redirect(`${frontendUrl}/portfolio`);
+    });
+
   } catch (error) {
-    console.error('Error getting tokens:', error.message);
-    res.status(500).send('Authentication failed during callback.');
+    console.error('Error during Google OAuth callback:', error.message);
+    res.status(500).redirect(`${process.env.FRONTEND_URL_DEV || '/'}/login-error`);
   }
 });
 
-// ... (The rest of your routes: /api/auth/status, /auth/logout, /api/videos, etc. can stay the same) ...
-// ... They are well-written and will work correctly with this setup. ...
+// Route for the frontend to check the current user's authentication status
+app.get('/api/auth/status', (req, res) => {
+  if (req.session.user) {
+    res.status(200).json({ isAuthenticated: true, user: req.session.user });
+  } else {
+    res.status(200).json({ isAuthenticated: false, user: null });
+  }
+});
 
-// Your isAuthenticated middleware and API routes are correct. I'm omitting them for brevity.
-// Make sure to paste them back in here if you are copying this whole file.
+// Route to log the user out by destroying the session
+app.post('/api/auth/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Logout failed. Please try again.' });
+    }
+    res.clearCookie('connect.sid'); // Default session cookie name
+    res.status(200).json({ message: 'Logout successful' });
+  });
+});
 
 
-// --- Start the Server ---
-const PORT = process.env.PORT || 5000;
+// --- 5. Protected API Routes ---
+
+// Middleware to verify if a user is authenticated
+const isAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+    return next(); // User is logged in, proceed to the route handler
+  }
+  res.status(401).json({ message: 'Unauthorized: You must be logged in to access this resource.' });
+};
+
+// Example protected route
+app.get('/api/videos', isAuthenticated, async (req, res) => {
+  try {
+    // IMPORTANT: For each API call, re-hydrate the client with the session tokens
+    oauth2Client.setCredentials(req.session.tokens);
+
+    const drive = google.drive({ version: 'v3', auth: oauth2Client });
+    
+    // Your logic to fetch videos from Google Drive
+    // const response = await drive.files.list({...});
+    // const videos = response.data.files;
+    
+    res.json({ message: "This is a protected route. Successfully authorized to fetch videos.", videos: [] });
+
+  } catch (error) {
+    console.error("Error fetching from Google Drive API:", error.message);
+    res.status(500).json({ message: "Failed to fetch data from Google Drive." });
+  }
+});
+// In server.js
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // --- START DEBUGGING ---
+    console.log("--- CORS CHECK ---");
+    console.log("Request Origin:", origin);
+    console.log("Allowed Origins:", allowedOrigins);
+    // --- END DEBUGGING ---
+
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      console.log("Result: Origin ALLOWED");
+      callback(null, true);
+    } else {
+      console.log("Result: Origin BLOCKED");
+      callback(new Error('This origin is not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
+
+// --- 6. Start Server ---
+
 app.listen(PORT, () => {
-    // CHANGE 4: More generic startup message suitable for production.
-    console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`   Mode: ${IS_PRODUCTION ? 'production' : 'development'}`);
 });

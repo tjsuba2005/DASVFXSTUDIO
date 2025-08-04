@@ -1,5 +1,15 @@
 {
+  "name": "my-render-app",
+  "version": "1.0.0",
+  "description": "My application for Render",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "dotenv": "^17.2.1"
+    "dotenv": "^16.0.3" 
+  },
+  "engines": {
+    "node": "18.x"
   }
 }

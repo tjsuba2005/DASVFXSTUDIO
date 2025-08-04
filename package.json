@@ -4,7 +4,7 @@
   "description": "My application for Render",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server/index.js"
   },
   "dependencies": {
     "dotenv": "^16.0.3" 

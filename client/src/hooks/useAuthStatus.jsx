@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
 // This custom hook will manage the logic for checking auth status
 export const useAuthStatus = () => {

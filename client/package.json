@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
-    
   },
   "dependencies": {
     "@cloudinary/react": "^1.14.3",
@@ -20,7 +19,7 @@
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-player": "^3.1.0",
-    "react-router-dom": "^7.6.3",
+    "react-router-dom": "^6.30.1",
     "tus-js-client": "^4.3.1"
   },
   "devDependencies": {

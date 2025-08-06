@@ -46,7 +46,7 @@ jobs:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           VITE_REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
           VITE_GOOGLE_DRIVE_ROOT_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_ROOT_FOLDER_ID }}
-        run: npm run build --mode github
+        run: npm run build 
      
       - name: Setup Pages
         uses: actions/configure-pages@v5

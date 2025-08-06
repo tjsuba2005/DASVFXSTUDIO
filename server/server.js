@@ -45,14 +45,14 @@ app.use(cors({
 
 // Then, the body parser for JSON.
 app.use(express.json());
-
+app.set('trust proxy', 1); 
 // THEN, the session middleware (so routes can use req.session).
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-    secure: auto,
+    secure: IS_PRODUCTION,
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24,
   }

@@ -7,6 +7,7 @@ import express from 'express';
 import { google } from 'googleapis';
 import cors from 'cors';
 import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
 
 // --- 1. Environment & Initial Setup ---
 
@@ -42,19 +43,33 @@ app.use(cors({
   },
   credentials: true,
 }));
-
 // Then, the body parser for JSON.
 app.use(express.json());
 app.set('trust proxy', 1); 
-// THEN, the session middleware (so routes can use req.session).
+// Initialize the session store with connect-pg-simple
+const PgStore = connectPgSimple(session);
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Required for Render's internal connections
+  }
+});
+
+// ...
+
+// Update your session middleware to use the new store
 app.use(session({
+  store: new PgStore({
+    pool: pool,                // Connection pool
+    tableName: 'user_sessions'   // Use a custom table name
+  }),
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: IS_PRODUCTION,
+    secure: 'auto',
     httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24,
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
   }
 }));
 

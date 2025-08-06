@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { google } from 'googleapis';
 import cors from 'cors';
+import pg from 'pg'; 
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 

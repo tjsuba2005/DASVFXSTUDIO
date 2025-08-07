@@ -98,6 +98,10 @@
   background-color: #fff;
   color: var(--navbar-btn-text);
   transform: translateY(-2px);
+   -webkit-backdrop-filter: blur(8px); 
+  
+  /* 2. Standard, non-prefixed version last */
+  backdrop-filter: blur(8px);
 }
 
 

@@ -8,7 +8,7 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     // Set the base path conditionally
-    base:  '/',
+    base: '/DASVFXSTUDIO/',
 
     plugins: [react()],
     server: {

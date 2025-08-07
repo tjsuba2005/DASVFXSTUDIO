@@ -1,117 +1,58 @@
-# 1. Install dependencies for the frontend (in the root directory)
-# This creates/updates the root package-lock.json
-npm install
-
-# 2. Install dependencies for the backend (in the server directory)
-# This creates/updates the server's package-lock.json
-cd server
-npm install
-cd ..
-
-# 3. Add ALL new and modified files to Git at once
-# The dot "." means "everything in this directory and all subdirectories"
-git add .
-
-# 4. (Optional but Recommended) Check what you are about to commit
-# You should see a big list of green files: .gitignore, the two package-lock.json files,
-# and all the files inside your 'client' and 'server' folders.
-git status
-
-# 5. Commit the new unified project structure
-git commit -m "refactor: Unify project into a single monorepo"
-
-
-# 6. Push the changes to GitHub
-# This will trigger your workflows with the correct repository structure.
-git push origin main
 # =================================================================
-# GENERAL
+# DEPENDENCIES
+# Do not commit the node_modules directory.
+# This is the most important rule for any Node.js project.
 # =================================================================
+node_modules/
+client/node_modules/
+server/node_modules/
+
+
+# =================================================================
+# BUILD OUTPUT
+# Ignore compiled files and build artifacts from Vite.
+# =================================================================
+client/dist/
+
+
+# =================================================================
+# ENVIRONMENT VARIABLES
+# Never commit secret keys, passwords, or API tokens.
+# =================================================================
+.env
+.env.*
+# Do NOT ignore the example file if you have one
+! .env.example
+
+
+# =================================================================
+# LOGS
 # Ignore log files from Node, npm, yarn, etc.
+# =================================================================
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
-lerna-debug.log*
-
-
-# =================================================================
-# DEPENDENCIES
-#
-# Do not commit the node_modules directory. This is the most important rule.
-# The leading slash ensures we only ignore the top-level folders.
-# =================================================================
-/node_modules/
-/server/node_modules/
-
-
-# =================================================================
-# BUILD OUTPUT
-#
-# Ignore compiled files and build artifacts. These are generated
-# automatically by your build process (e.g., `npm run build`).
-# =================================================================
-/dist/
-/dist-ssr/
-/build/
-/.svelte-kit/
-/out/
-
-
-# =================================================================
-# ENVIRONMENT VARIABLES
-#
-# Never, ever commit your secret keys, passwords, or API tokens.
-# The .env file is for local development secrets.
-# It is a best practice to commit a template file (e.g., .env.example)
-# to show other developers what variables are needed.
-# =================================================================
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Do NOT ignore the example file
-! .env.example
 
 
 # =================================================================
 # OPERATING SYSTEM & EDITOR FILES
-#
-# These files are specific to your local computer and should not be
-# in the repository, as they create noise for other collaborators.
+# Ignore files specific to your local computer.
 # =================================================================
-
 # macOS
 .DS_Store
-.AppleDouble
-.LSOverride
 
 # Windows
 Thumbs.db
-ehthumbs.db
-ehthumbs_vista.db
 *.lnk
 
-# VS Code editor
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-
-# JetBrains IDEs (WebStorm, IntelliJ, etc.)
-.idea/
-
-# Vim
-*.swp
-*.swo
+# VS Code
+.vscode/
 
 
 # =================================================================
-# LEGACY & CACHE
-#
-# Cache files from various tools.
+# CACHE & LEGACY
 # =================================================================
 .jekyll-cache/
 .jekyll-metadata

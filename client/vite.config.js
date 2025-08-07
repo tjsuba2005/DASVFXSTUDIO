@@ -4,12 +4,11 @@ import react from '@vitejs/plugin-react-swc'
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   // Check if we are building for GitHub Pages
-  //const isGithubPages = mode === 'github';
+  const isGithubPages = mode === 'github';
 
   return {
     // Set the base path conditionally
-    base: '/',
-
+    base: isGithubPages ? '/DASVFXSTUDIO/' : '/', 
     plugins: [react()],
     server: {
       hmr: {

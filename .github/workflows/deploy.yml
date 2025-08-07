@@ -40,7 +40,7 @@ jobs:
           VITE_REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
           VITE_GOOGLE_DRIVE_ROOT_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_ROOT_FOLDER_ID }}
         # This command builds the application for GitHub Pages
-        run: npm run build --mode github
+        run: npx vite build --mode github
      
       - name: Setup Pages
         uses: actions/configure-pages@v5

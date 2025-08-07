@@ -49,6 +49,7 @@ app.use(express.json());
 app.set('trust proxy', 1); 
 // Initialize the session store with connect-pg-simple
 const PgStore = connectPgSimple(session);
+
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {

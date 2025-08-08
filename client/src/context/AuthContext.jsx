@@ -1,12 +1,15 @@
+// src/context/AuthProvider.jsx
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
-const BACKEND_URL =  import.meta.env.VITE_API_URL;
+// Get the backend URL from environment variables
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 // 1. Create the context
 const AuthContext = createContext();
 
-// 2. Create a custom hook to make using the context easier
+// 2. Create a custom hook for easy consumption
 export const useAuth = () => {
   return useContext(AuthContext);
 };
@@ -14,56 +17,57 @@ export const useAuth = () => {
 // 3. Create the Provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Start loading until session is checked
 
+  // This effect runs once on app load to check for an existing session cookie
   useEffect(() => {
-    // This runs once when the app loads to check for an existing session
-    const checkLoggedIn = async () => {
+    const checkAuthStatus = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/auth/status`, {
-          withCredentials: true,
+          withCredentials: true, // Crucial for sending the session cookie
         });
         if (response.data.isAuthenticated) {
           setUser(response.data.user);
         }
       } catch (error) {
-        console.error('User is not authenticated', error);
+        // This is expected if the user is not logged in
+        console.error('User is not authenticated on load');
         setUser(null);
       } finally {
+        // We are done checking, so allow the app to render
         setIsLoading(false);
       }
     };
-    checkLoggedIn();
-  }, []);
+    checkAuthStatus();
+  }, []); // Empty array means this effect runs only once
 
-const handleLogin = () => {
-  // Get your backend's URL from Vercel's environment variables
-  const backendUrl = import.meta.env.VITE_API_URL;
-
-  // This will redirect the user's browser to the backend,
-  // which will then redirect them to Google. This is the correct OAuth flow.
-  window.location.href = `${backendUrl}/auth/google`;
-};
+  // CRITICAL FIX: The function is now named `login` to match the context value.
+  const login = () => {
+    // This is the correct way to initiate an OAuth flow.
+    // It navigates the entire browser to the backend endpoint.
+    window.location.href = `${BACKEND_URL}/auth/google`;
+  };
 
   const logout = async () => {
     try {
-      await axios.get(`${BACKEND_URL}/auth/logout`, { withCredentials: true });
-      setUser(null); // Clear the user state on the frontend
-      // You might want to navigate the user to the homepage here
+      await axios.post(`${BACKEND_URL}/api/auth/logout`, { withCredentials: true });
+      setUser(null); // Clear the user from frontend state
+      // Optionally, navigate to the homepage after logout
+      // window.location.href = '/';
     } catch (error) {
-      console.error('Logout failed', error);
+      console.error('Logout failed:', error);
     }
   };
 
-  // The value that will be available to all children components
+  // The value object provides state and functions to consuming components
   const value = {
     user,
     isLoading,
-    login,
+    login, // Now this correctly references the `login` function above
     logout,
   };
 
-  // We don't render anything until we've checked the auth status
+  // Prevent rendering the main app until the initial auth check is complete
   return (
     <AuthContext.Provider value={value}>
       {!isLoading && children}

@@ -9,7 +9,8 @@ import cors from 'cors';
 import pg from 'pg';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-
+const express = require('express');
+const cors = require('cors');
 // --- 1. Environment & Initial Setup ---
 dotenv.config();
 

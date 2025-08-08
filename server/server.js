@@ -18,10 +18,12 @@ const PORT = process.env.PORT || 5000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 // --- 2. Core Middleware (Order is CRITICAL) ---
+// 2. Define your CORS options
 
 // UPDATED: Simplified and more reliable CORS configuration.
 const corsOptions = {
-  origin: IS_PRODUCTION ? process.env.FRONTEND_URL_PROD : process.env.FRONTEND_URL_DEV,
+origin: 'https://dasvfxstudio-git-main-subas-projects-4f8c0026.vercel.app',
+  methods: "GET,POST,PUT,DELETE", // Allowed HTTP methods
   credentials: true,
 };
 app.use(cors(corsOptions));

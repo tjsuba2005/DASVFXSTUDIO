@@ -36,14 +36,14 @@ export const AuthProvider = ({ children }) => {
     checkLoggedIn();
   }, []);
 
-  const login = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/auth/google`);
-      window.location.href = response.data.url;
-    } catch (error) {
-      console.error('Failed to initiate login', error);
-    }
-  };
+const handleLogin = () => {
+  // Get your backend's URL from Vercel's environment variables
+  const backendUrl = import.meta.env.VITE_API_URL;
+
+  // This will redirect the user's browser to the backend,
+  // which will then redirect them to Google. This is the correct OAuth flow.
+  window.location.href = `${backendUrl}/auth/google`;
+};
 
   const logout = async () => {
     try {

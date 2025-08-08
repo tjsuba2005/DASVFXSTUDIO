@@ -75,7 +75,7 @@ const Navbar = () => {
           ) : (
             // 3. If no user is logged in, show the Login button
             <li className="nav-item">
-              <button onClick={() => { login(); closeMobileMenu(); }} className=".nav-links-btn">
+              <button onClick={() => { handleLogin(); closeMobileMenu(); }} className=".nav-links-btn">
                 Login
               </button>
             </li>

@@ -8,7 +8,7 @@ import Layout from './components/Layout';
 // Import all your page components
 import HomePage from './pages/HomePage';
 import PortfolioPage from './pages/PortfolioPage';
-import ServicesPage from './pages/ServicesPage';
+import ServicesPage  from './pages/ServicesPage';
 import ContactPage from './pages/ContactPage';
 import AboutUs from './pages/AboutUs';
 import NotFoundPage from './pages/NotFoundPage';

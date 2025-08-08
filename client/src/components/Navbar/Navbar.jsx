@@ -8,7 +8,7 @@ import studioLogo from './Logo.jpg';
 
 const Navbar = () => {
   // 1. Get user, login, and logout from the global AuthContext
-  const { user, login, logout } = useAuth(); 
+  const { user, handleLogin, logout } = useAuth(); 
   
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const toggleMobileMenu = () => setMobileMenuOpen(!isMobileMenuOpen);

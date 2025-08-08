@@ -1,7 +1,8 @@
 // src/components/VideoUploader.jsx (Updated for Google Cloud)
 
 import React, { useState } from 'react';
-
+const apiUrl = import.meta.env.VITE_API_URL;
+const responseurl = await fetch(`${apiUrl}/api/gcs/generate-upload-url`, { ... });
 function VideoUploader({ onUploadSuccess }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('idle');
@@ -27,7 +28,7 @@ function VideoUploader({ onUploadSuccess }) {
 
     try {
       // Step 1: Get the secure upload URL from our backend server
-      const response = await fetch('http://localhost:3001/api/gcs/generate-upload-url', {
+      const response = await fetch(responseurl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

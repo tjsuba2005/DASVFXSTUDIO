@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   }, []); // Empty array means this effect runs only once
 
   // CRITICAL FIX: The function is now named `login` to match the context value.
-  const login = () => {
+  const handleLogin = () => {
     // This is the correct way to initiate an OAuth flow.
     // It navigates the entire browser to the backend endpoint.
     window.location.href = `${BACKEND_URL}/auth/google`;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../../context/AuthProvider'; // Import the hook
+import { useAuth } from '../../context/useAuthStatus.jsx'; // Import the hook
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 

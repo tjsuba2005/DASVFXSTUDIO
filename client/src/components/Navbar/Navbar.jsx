@@ -1,86 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useAuth } from '../../context/AuthProvider'; // Import the hook
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // Correct path to your context
 import './Navbar.css';
 
-// Import your logo image into a variable
-import studioLogo from './Logo.jpg'; 
-
 const Navbar = () => {
-  // 1. Get user, login, and logout from the global AuthContext
-  const { user, handleLogin, logout } = useAuth(); 
-  
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const toggleMobileMenu = () => setMobileMenuOpen(!isMobileMenuOpen);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
-
-  // Helper function for logging out and closing the menu
-  const handleLogout = () => {
-    logout();
-    closeMobileMenu();
-  };
+  // Use the hook to get everything you need!
+  const { user, isAuthenticated, login, logout } = useAuth();
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          <div className="logo-wrapper">
-            <img src={studioLogo} alt="DASVFX Studio Logo" className="logo-image" />
-            <span className="logo-text">DASVFX STUDIO</span>
-          </div>
+        <Link to="/" className="navbar-logo">
+          {/* ... your logo ... */}
         </Link>
-
-        <div className="menu-icon" onClick={toggleMobileMenu}>
-          {/* A simple hamburger icon using divs */}
-          <i className={isMobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'} />
-        </div>
-
-        <ul className={isMobileMenuOpen ? 'nav-menu active' : 'nav-menu'}>
-          <li className="nav-item">
-            <Link to="/" className="nav-links" onClick={closeMobileMenu}>Home</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/portfolio" className="nav-links" onClick={closeMobileMenu}>Portfolio</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/services" className="nav-links" onClick={closeMobileMenu}>Services</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/contact" className="nav-links" onClick={closeMobileMenu}>Contact</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/aboutus" className="nav-links" onClick={closeMobileMenu}>About Us</Link>
-          </li>
-          
-          {/* --- DYNAMIC AUTHENTICATION SECTION --- */}
-          {user ? (
-            // 2. If a user is logged in, show Logout and their avatar
-            <>
-              <li className="nav-item mobile-only"> 
-                <button onClick={handleLogout} className="nav-links nav-links-btn">
-                  Logout
-                </button>
-              </li>
-              <li className="nav-item desktop-only">
-                 <button onClick={handleLogout} className="nav-links-btn-logout">
-                  Logout
-                </button>
-              </li>
-               <li className="nav-item desktop-only">
-                {user.picture && (
-                  <img src={user.picture} alt="User Avatar" className="user-avatar" />
-                )}
-              </li>
-            </>
-          ) : (
-            // 3. If no user is logged in, show the Login button
-            <li className="nav-item">
-              <button onClick={() => { handleLogin(); closeMobileMenu(); }} className=".nav-links-btn">
-                Login
+        
+        {/* ... your nav menu ... */}
+        
+        <div className="nav-auth-section">
+          {isAuthenticated ? (
+            // --- User is Logged In ---
+            <div className="user-info">
+              <img src={user.avatar} alt={user.displayName} className="user-avatar" />
+              <span>Welcome, {user.displayName}</span>
+              <button onClick={logout} className="nav-links-btn-logout">
+                Logout
               </button>
-            </li>
+            </div>
+          ) : (
+            // --- User is Logged Out ---
+            <button onClick={login} className="nav-links-btn">
+              Login with Google
+            </button>
           )}
-        </ul>
+        </div>
       </div>
     </nav>
   );

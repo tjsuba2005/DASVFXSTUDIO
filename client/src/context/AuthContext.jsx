@@ -1,20 +1,18 @@
-// src/context/AuthProvider.jsx
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
-// Get the backend URL from environment variables
+// Use a single, consistent environment variable for the backend URL
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 // 1. Create the context
 const AuthContext = createContext();
 
-// 2. Create a custom hook for easy consumption
+// 2. Create a custom hook for easy consumption by any component
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-// 3. Create the Provider component
+// 3. Create the Provider component which will house all auth logic
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Start loading until session is checked
@@ -23,51 +21,64 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
+        // Use the defined BACKEND_URL
         const response = await axios.get(`${BACKEND_URL}/api/auth/status`, {
           withCredentials: true, // Crucial for sending the session cookie
         });
+
         if (response.data.isAuthenticated) {
           setUser(response.data.user);
+        } else {
+          setUser(null);
         }
       } catch (error) {
-        // This is expected if the user is not logged in
-        console.error('User is not authenticated on load');
+        // This is expected if the user is not logged in or the server is down
+        console.log('Auth check failed, user is not authenticated.');
         setUser(null);
       } finally {
-        // We are done checking, so allow the app to render
+        // We are done checking, so allow the rest of the app to render
         setIsLoading(false);
       }
     };
-    checkAuthStatus();
-  }, []); // Empty array means this effect runs only once
 
-  // CRITICAL FIX: The function is now named `login` to match the context value.
+    checkAuthStatus();
+  }, []); // Empty array means this effect runs only once on mount
+
+  // --- Auth Actions ---
+
+  // Function to initiate the Google OAuth flow
   const login = () => {
-    // This is the correct way to initiate an OAuth flow.
-    // It navigates the entire browser to the backend endpoint.
-    window.location.href = `${BACKEND_URL}/auth/google`;
+    // This correctly navigates the entire browser window to the backend
+    // which then redirects to Google.
+    window.location.href = `${BACKEND_URL}/api/auth/google`;
   };
 
+  // Function to log the user out
   const logout = async () => {
     try {
-      await axios.post(`${BACKEND_URL}/api/auth/logout`, { withCredentials: true });
-      setUser(null); // Clear the user from frontend state
-      // Optionally, navigate to the homepage after logout
-      // window.location.href = '/';
+      await axios.post(`${BACKEND_URL}/api/auth/logout`, {}, {
+        withCredentials: true,
+      });
+      setUser(null); // Clear the user from frontend state immediately
     } catch (error) {
       console.error('Logout failed:', error);
+      // Even if the server call fails, we can log the user out on the frontend
+      setUser(null);
     }
   };
 
-  // The value object provides state and functions to consuming components
+  // The value object provides state and functions to all consuming components
   const value = {
-    user,
-    isLoading,
-    login, // Now this correctly references the `login` function above
-    logout,
+    user,         // The user object or null
+    isLoading,    // boolean: true while checking auth status, then false
+    isAuthenticated: !!user, // A convenient boolean flag
+    login,        // function to trigger login
+    logout,       // function to trigger logout
   };
 
-  // Prevent rendering the main app until the initial auth check is complete
+  // The `!isLoading && children` pattern is a great UX feature. It prevents
+  // the app from showing a "logged out" state for a split second before
+  // the auth check completes.
   return (
     <AuthContext.Provider value={value}>
       {!isLoading && children}

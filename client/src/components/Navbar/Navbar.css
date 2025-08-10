@@ -18,9 +18,9 @@
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
-  position: sticky; /* Keeps the navbar at the top on scroll */
+  position: sticky;
   top: 0;
-  z-index: 100; /* Ensures navbar is on top of all other page content */
+  z-index: 100;
 }
 
 .navbar-container {
@@ -76,6 +76,7 @@
   text-decoration: none;
   padding: 0.5rem 1rem;
   transition: all 0.2s ease-out;
+  border-radius: 4px; /* ADDED: For better focus state */
 }
 
 .nav-links:hover {
@@ -90,26 +91,19 @@
   border: none;
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap; /* Prevents text like "Login with Google" from wrapping */
+  white-space: nowrap;
   transition: all 0.2s ease-out;
 }
 
 .nav-links-btn:hover {
-  background-color: #fff;
+  /* UPDATED: Use a translucent background for backdrop-filter to work */
+  background-color: rgba(224, 224, 224, 0.75);
   color: var(--navbar-btn-text);
   transform: translateY(-2px);
-   -webkit-backdrop-filter: blur(10px); 
-  
-  /* 2. Standard, non-prefixed version last */
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 
-
-/* ====================================== */
-/*    NEW - DYNAMIC AUTH STYLES           */
-/* ====================================== */
-
-/* Style for the user's circular profile picture avatar */
 .user-avatar {
   height: 45px;
   width: 45px;
@@ -118,7 +112,6 @@
   border: 2px solid var(--navbar-accent-color);
 }
 
-/* Style for the outline-style logout button on desktop */
 .nav-links-btn-logout {
   background-color: transparent;
   color: var(--navbar-text-color);
@@ -135,15 +128,10 @@
   color: var(--navbar-btn-text);
 }
 
-/* By default, hide elements meant only for mobile view */
 .mobile-only {
   display: none;
 }
 
-
-/* ====================================== */
-/*        MOBILE & RESPONSIVE STYLES      */
-/* ====================================== */
 .menu-icon {
   display: none;
   font-size: 1.8rem;
@@ -151,13 +139,21 @@
   cursor: pointer;
 }
 
+/* ADDED: Focus states for better accessibility */
+.nav-links:focus-visible,
+.nav-links-btn:focus-visible,
+.nav-links-btn-logout:focus-visible,
+.menu-icon:focus-visible {
+  outline: 2px solid var(--navbar-accent-color);
+  outline-offset: 2px;
+}
+
+
 @media (max-width: 960px) {
-  /* Hide desktop-specific elements on mobile */
   .desktop-only {
     display: none;
   }
   
-  /* Show mobile-specific elements on mobile */
   .mobile-only {
     display: block;
     width: 100%;
@@ -170,14 +166,19 @@
     height: calc(100vh - 80px);
     position: absolute;
     top: 80px;
-    left: -100%;
-    transition: all 0.5s ease;
-    background-color: var(--navbar-bg-color); /* Add solid background for mobile menu */
+    
+    /* UPDATED: Using transform for better animation performance */
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+    
+    background-color: var(--navbar-bg-color);
     padding: 2rem 0;
   }
 
   .nav-menu.active {
-    left: 0;
+    /* UPDATED: Using transform */
+    transform: translateX(0);
   }
 
   .nav-item {
@@ -195,10 +196,15 @@
   .nav-links-btn {
     width: 80%;
     margin: 0.5rem auto;
-    padding: 12px 20px; /* Make buttons a bit bigger on mobile */
+    padding: 12px 20px;
   }
 
   .menu-icon {
     display: block;
   }
+}
+
+/* ADDED: Class to prevent body scroll when mobile menu is active */
+body.menu-open {
+  overflow: hidden;
 }

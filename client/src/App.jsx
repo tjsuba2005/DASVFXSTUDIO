@@ -14,7 +14,7 @@ import AboutUs from './pages/AboutUs';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Import the component for handling the auth callback
-import AuthSuccessPage from './pages/AuthSuccessPage';
+import AuthSuccessPage from './pages/AuthSuccessPage.jsx';
 
 // --- NEW IMPORTS FOR ERROR BOUNDARY DEMO ---
 import ErrorBoundary from './pages/ErrorBoundary.jsx';

@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
 // Use a single, consistent environment variable for the backend URL
-const BACKEND_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.API_BASE_URL;
 
 // 1. Create the context
 const AuthContext = createContext();

@@ -45,11 +45,13 @@ export const AuthProvider = ({ children }) => {
   }, []); // Empty array means this effect runs only once on mount
 
   // --- Auth Actions ---
- console.log("The API URL is:", BACKEND_URL); 
+
   // Function to initiate the Google OAuth flow
   const login = () => {
+     const apiUrl = process.env.API_BASE_URL;
     // This correctly navigates the entire browser window to the backend
     // which then redirects to Google.
+     console.log("The API URL is:", BACKEND_URL); 
     window.location.href = `${BACKEND_URL}/api/auth/google`;
   };
 

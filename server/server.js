@@ -11,7 +11,10 @@ import pg from 'pg';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 
-// --- 2. Environment & Initial Setup ---
+
+// --- 2. Environment & Initial Setup ---/ Import the newly created router
+import authRoutes from './routes/auth.js';
+
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
@@ -148,6 +151,7 @@ app.post('/api/auth/logout', (req, res) => {
     res.status(200).json({ message: 'Logout successful' });
   });
 });
+app.use('/api/auth', authRoutes);
 
 // --- 6. Start Server ---
 app.listen(PORT, () => {

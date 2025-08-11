@@ -130,6 +130,7 @@ app.get('/auth/google/callback', async (req, res) => {
     res.redirect(`${process.env.FRONTEND_URL}/?error=auth_failed`);
   }
 });
+app.use('/api/auth', authRoutes);
 
 // Route to check authentication status from the frontend
 app.get('/api/auth/status', (req, res) => {

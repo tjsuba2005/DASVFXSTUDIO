@@ -1,7 +1,8 @@
 // src/App.js
 
-import { Routes, Route } from 'react-router-dom';
 
+// Make sure to import HashRouter here
+import { HashRouter, Routes, Route } from 'react-router-dom';
 // Import your Layout component
 import Layout from './components/Layout'; 
 
@@ -24,6 +25,7 @@ import BuggyCounter from './components/BuggyCounter';
 function App() {
   
   return (
+    <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <Routes>
       {/* This main route uses your Layout for all nested pages */}
       {/* Because the ErrorBoundary is inside this route, if a page crashes, the Layout (nav/footer) will remain visible. */}
@@ -59,6 +61,7 @@ function App() {
         <Route path="*" element={<NotFoundPage/>} />
       </Route>
     </Routes>
+  </HashRouter>
   );
 }
 

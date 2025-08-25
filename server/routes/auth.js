@@ -21,7 +21,6 @@ router.get(
     successRedirect: `${process.env.CLIENT_URL}/dashboard`,
   })
 );
-module.exports = router;
 // ROUTE 3: A route to check the current auth status
 router.get('/status', (req, res) => {
   if (req.isAuthenticated()) {
